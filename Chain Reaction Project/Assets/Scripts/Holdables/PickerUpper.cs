@@ -5,19 +5,21 @@ namespace Holdables
 {
     public class PickerUpper : MonoBehaviour
     {
-        [SerializeField] private Holdable currentHoldable;
+        private Holdable currentHoldable;
 
         protected virtual Vector3 PutDownPosition => transform.position + Vector3.forward * 2;
 
-        internal void PickHoldableUp()
+        internal void PickHoldableUp(Holdable holdable)
         {
-            if (currentHoldable == null)
+            if (holdable == null)
                 return;
 
-            Transform trans = currentHoldable.transform;
+            Transform trans = holdable.transform;
 
             trans.SetParent(transform);
             trans.localPosition = Vector3.zero;
+
+            currentHoldable = holdable;
         }
 
         internal void PutHoldableDown()
@@ -29,6 +31,8 @@ namespace Holdables
 
             trans.SetParent(null);
             trans.position = PutDownPosition;
+
+            currentHoldable = null;
         }
     }
 
@@ -38,8 +42,10 @@ namespace Holdables
     {
         public override void OnInspectorGUI()
         {
+            Holdable holdable = FindObjectOfType<Holdable>();
+
             if (GUILayout.Button("Pick Up"))
-                ((PickerUpper)target).PickHoldableUp();
+                ((PickerUpper)target).PickHoldableUp(holdable);
 
             if (GUILayout.Button("Put Down"))
                 ((PickerUpper)target).PutHoldableDown();
