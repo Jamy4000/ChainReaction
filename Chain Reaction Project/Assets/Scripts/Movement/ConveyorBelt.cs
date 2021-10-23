@@ -9,6 +9,10 @@ public class ConveyorBelt : MonoBehaviour
     [SerializeField]
     private AudioSource _conveySound;
     [SerializeField]
+    private AudioSource _spawnSound;
+    [SerializeField]
+    private AudioSource _dropOffSound;
+    [SerializeField]
     private float _speedOfItem;
 
     [SerializeField]
@@ -28,6 +32,7 @@ public class ConveyorBelt : MonoBehaviour
         _item = Item;
         _item.Held += pickup;
         _item.transform.position = _startPosition.position;
+        _spawnSound.Play();
     }
 
     private void pickup(Holdable holdable)
@@ -76,6 +81,8 @@ public class ConveyorBelt : MonoBehaviour
                 {
                     _item.Held -= pickup;
                     _item = null;
+
+                    _dropOffSound.Play();
                 }
             }
         }
