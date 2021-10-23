@@ -5,7 +5,11 @@ using System.Linq;
 
 public class Forkinteractor : MonoBehaviour
 {
-    
+    [SerializeField]
+    private AudioSource _itemPickupSound;
+    [SerializeField]
+    private AudioSource _itemDropSound;
+
     private HashSet<Collider> _bombNearFork = new HashSet<Collider>();
     private Collider _heldBomb = null;
 
