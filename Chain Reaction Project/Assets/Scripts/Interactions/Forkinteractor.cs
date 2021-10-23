@@ -6,7 +6,7 @@ using System.Linq;
 public class Forkinteractor : MonoBehaviour
 {
     [SerializeField]
-    private Vector3 _cratePositionOffset;
+    private Transform _cratePositionOffset;
     private HashSet<Collider> _crateNearFork = new HashSet<Collider>();
 
     [SerializeField]
@@ -56,7 +56,8 @@ public class Forkinteractor : MonoBehaviour
                         }
                     };
                     closestCrate.transform.SetParent(this.transform);
-                    closestCrate.transform.localPosition = _cratePositionOffset;
+                    closestCrate.transform.localPosition = _cratePositionOffset.localPosition;
+                    closestCrate.transform.localRotation = Quaternion.identity;
                     _heldCrate = closestCrate;
                 }
             }
