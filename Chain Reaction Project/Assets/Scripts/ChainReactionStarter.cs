@@ -11,15 +11,18 @@ namespace ChainReaction
         public List<ExplosionForce> allExplosives = new List<ExplosionForce>();
         public List<ExplosionForce> chainedExplosives = new List<ExplosionForce>();
 
-        [SerializeField] private Color chainedColor;
-        [SerializeField] private Color unchainedColor;
+        [SerializeField, ColorUsageAttribute(true, true)] private Color chainedColor;
+        [SerializeField, ColorUsageAttribute(true, true)] private Color chainedWarningColor;
+        [SerializeField, ColorUsageAttribute(true, true)] private Color unchainedColor;
+        [SerializeField, ColorUsageAttribute(true, true)] private Color unchainedWarningColor;
 
         private void Awake()
         {
             explosionForce = GetComponent<ExplosionForce>();
             StaticActionProvider.recalculateChainReaction += RecalculateChain;
-        }
 
+            RecalculateChain();
+        }
 
         private void OnDestroy() => StaticActionProvider.recalculateChainReaction -= RecalculateChain;
 
@@ -65,11 +68,15 @@ namespace ChainReaction
             foreach (var item in chainedExplosives)
             {
                 unchained.Remove(item);
-                item.explosionRangeShader.GetComponent<MeshRenderer>().material.SetColor("Color", chainedColor);
+                item.explosionRangeShader.GetComponent<MeshRenderer>().material.SetColor("Color_", chainedColor);
+                item.explosionRangeShader.GetComponent<MeshRenderer>().material.SetColor("WarningSignsColor_", chainedWarningColor);
             }
 
             foreach (var item in unchained)
-                item.explosionRangeShader.GetComponent<MeshRenderer>().material.SetColor("Color", unchainedColor);
+            {
+                item.explosionRangeShader.GetComponent<MeshRenderer>().material.SetColor("Color_", unchainedColor);
+                item.explosionRangeShader.GetComponent<MeshRenderer>().material.SetColor("WarningSignsColor_", unchainedWarningColor);
+            }
         }
     }
 }
