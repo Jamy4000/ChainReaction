@@ -116,6 +116,12 @@
         },
         {
             "m_Id": "0c1c5b3fef80492a823a011ad184f6f8"
+        },
+        {
+            "m_Id": "6c7e0ae4ea14475d97f411e33126497b"
+        },
+        {
+            "m_Id": "4f1104b16a8647b58660bd8dae8ce513"
         }
     ],
     "m_GroupDatas": [],
@@ -519,8 +525,8 @@
     },
     "m_FragmentContext": {
         "m_Position": {
-            "x": -8.666609764099121,
-            "y": 356.66668701171877
+            "x": -8.666627883911133,
+            "y": 354.6666564941406
         },
         "m_Blocks": [
             {
@@ -528,6 +534,12 @@
             },
             {
                 "m_Id": "e63ec99de2b64f1db83bf5a95396b578"
+            },
+            {
+                "m_Id": "6c7e0ae4ea14475d97f411e33126497b"
+            },
+            {
+                "m_Id": "4f1104b16a8647b58660bd8dae8ce513"
             }
         ]
     },
@@ -1183,6 +1195,21 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "358c00b9467c4d4abaadd15c136fd8b9",
+    "m_Id": 0,
+    "m_DisplayName": "Ambient Occlusion",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Occlusion",
+    "m_StageCapability": 2,
+    "m_Value": 0.0,
+    "m_DefaultValue": 1.0,
+    "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.ColorRGBMaterialSlot",
     "m_ObjectId": "35f86f6e385c413085ea56f0ec941821",
     "m_Id": 0,
@@ -1579,6 +1606,39 @@
 {
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.BlockNode",
+    "m_ObjectId": "4f1104b16a8647b58660bd8dae8ce513",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "SurfaceDescription.Occlusion",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "358c00b9467c4d4abaadd15c136fd8b9"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_SerializedDescriptor": "SurfaceDescription.Occlusion"
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.BlockNode",
     "m_ObjectId": "4f2cdd3254f94c658b315f79598f2d74",
     "m_Group": {
         "m_Id": ""
@@ -1659,6 +1719,21 @@
     "m_StageCapability": 2,
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
+    "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "545fbd177bcf492eb515e5d00f06446d",
+    "m_Id": 0,
+    "m_DisplayName": "Smoothness",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Smoothness",
+    "m_StageCapability": 2,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.5,
     "m_Labels": []
 }
 
@@ -1843,6 +1918,39 @@
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
     "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.BlockNode",
+    "m_ObjectId": "6c7e0ae4ea14475d97f411e33126497b",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "SurfaceDescription.Smoothness",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "545fbd177bcf492eb515e5d00f06446d"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_SerializedDescriptor": "SurfaceDescription.Smoothness"
 }
 
 {
@@ -2468,7 +2576,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "Alpha",
     "m_StageCapability": 2,
-    "m_Value": 1.0,
+    "m_Value": 0.23999999463558198,
     "m_DefaultValue": 1.0,
     "m_Labels": []
 }
