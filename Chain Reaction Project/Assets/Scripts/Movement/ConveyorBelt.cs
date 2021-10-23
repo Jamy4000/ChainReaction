@@ -7,6 +7,8 @@ using UnityEngine;
 public class ConveyorBelt : MonoBehaviour
 {
     [SerializeField]
+    private AudioSource _conveySound;
+    [SerializeField]
     private float _speedOfItem;
 
     [SerializeField]
@@ -20,7 +22,7 @@ public class ConveyorBelt : MonoBehaviour
     private bool _atEndPoint = false;
 
     private Holdable _item;
-
+    private float _soundWaitingTime = 0.3f; 
     public void AddItemForBelt(Holdable Item)
     {
         _item = Item;
@@ -42,6 +44,11 @@ public class ConveyorBelt : MonoBehaviour
         {
             if (!_atEndPoint)
             {
+                if (_conveySound.time > _soundWaitingTime)
+                {
+
+                    _conveySound.Play();
+                }
                 if (Vector3.Distance(_item.transform.position, _midPosition.position) > 0.05f)
                 {
                     _item.transform.position = Vector3.MoveTowards(_item.transform.position, _midPosition.position, _speedOfItem * Time.deltaTime);
@@ -60,6 +67,7 @@ public class ConveyorBelt : MonoBehaviour
 
             else
             {
+                _conveySound.Stop();
                 if (Vector3.Distance(_item.transform.position, _dropPosition.position) > 0.05f)
                 {
                     _item.transform.position = Vector3.MoveTowards(_item.transform.position, _dropPosition.position, _speedOfItem * Time.deltaTime);
