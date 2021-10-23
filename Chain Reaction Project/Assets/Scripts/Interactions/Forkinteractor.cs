@@ -7,6 +7,12 @@ public class Forkinteractor : MonoBehaviour
     [SerializeField]
     private Vector3 _cratePositionOffset;
     private List<Collider> _crateNearFork = new List<Collider>();
+
+    [SerializeField]
+    private Transform _dropPositionOffset;
+
+    private Collider _heldCrate = null;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag(TagsHolder.CRATE_TAG))
@@ -14,6 +20,7 @@ public class Forkinteractor : MonoBehaviour
             _crateNearFork.Add(other);
         }
     }
+
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag(TagsHolder.CRATE_TAG))
@@ -21,26 +28,37 @@ public class Forkinteractor : MonoBehaviour
             _crateNearFork.Remove(other);
         }
     }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (_crateNearFork.Count > 0)
+            // Dropping down crate
+            if (_heldCrate != null)
             {
-                Collider closestCrate = _crateNearFork[0];
-                foreach (Collider crate in _crateNearFork)
+                _heldCrate.transform.SetParent(null);
+                _heldCrate.transform.position = _dropPositionOffset.position;
+                _heldCrate = null;
+            }
+            else
+            {
+                // Picking up crate
+                if (_crateNearFork.Count > 0)
                 {
-                    if (Vector3.Distance(closestCrate.transform.position,this.transform.position)>
-                        Vector3.Distance(crate.transform.position,this.transform.position))
+                    Collider closestCrate = _crateNearFork[0];
+                    foreach (Collider crate in _crateNearFork)
                     {
-                        closestCrate = crate;
-                    } 
-                };
-                closestCrate.transform.SetParent(this.transform);
-                closestCrate.transform.localPosition = _cratePositionOffset;
+                        if (Vector3.Distance(closestCrate.transform.position, this.transform.position) >
+                            Vector3.Distance(crate.transform.position, this.transform.position))
+                        {
+                            closestCrate = crate;
+                        }
+                    };
+                    closestCrate.transform.SetParent(this.transform);
+                    closestCrate.transform.localPosition = _cratePositionOffset;
+                    _heldCrate = closestCrate;
+                }
             }
         }
     }
-
-
 }
