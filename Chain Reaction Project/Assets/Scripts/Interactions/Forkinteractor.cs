@@ -5,16 +5,12 @@ using System.Linq;
 
 public class Forkinteractor : MonoBehaviour
 {
-    [SerializeField]
-    private AudioSource _itemPickupSound;
-    [SerializeField]
-    private AudioSource _itemDropSound;
-
-    private HashSet<Collider> _crateNearFork = new HashSet<Collider>();
-    private Collider _heldCrate = null;
+    
+    private HashSet<Collider> _bombNearFork = new HashSet<Collider>();
+    private Collider _heldBomb = null;
 
     [SerializeField]
-    private Transform _cratePositionOffset;
+    private Transform _BombPositionOffset;
 
     [SerializeField]
     private Transform _dropPositionOffset;
@@ -23,22 +19,22 @@ public class Forkinteractor : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(TagsHolder.CRATE_TAG))
+        if (other.CompareTag(TagsHolder.BOMB_TAG))
         {
-            _crateNearFork.Add(other);
+            _bombNearFork.Add(other);
         }
-        
+
         //TODO: add drone interaction
         //if player has bomb, player dies
         //else only drone dies
-        
+
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag(TagsHolder.CRATE_TAG))
+        if (other.CompareTag(TagsHolder.BOMB_TAG))
         {
-            _crateNearFork.Remove(other);
+            _bombNearFork.Remove(other);
         }
     }
 
@@ -47,21 +43,23 @@ public class Forkinteractor : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             // Dropping down crate
-            if (_heldCrate != null)
+            if (_heldBomb != null)
             {
-                _heldCrate.transform.SetParent(null);
-                _heldCrate.transform.position = _dropPositionOffset.position;
-                _heldCrate = null;
+                _heldBomb.transform.SetParent(null);
+                _heldBomb.transform.position = _dropPositionOffset.position;
+                _heldBomb.GetComponent<Holdables.Holdable>().DropObject();
+
+                _heldBomb = null;
 
                 _itemDropSound.Play();
             }
             else
             {
                 // Picking up crate
-                if (_crateNearFork.Count > 0)
+                if (_bombNearFork.Count > 0)
                 {
-                    Collider closestCrate = _crateNearFork.First();
-                    foreach (Collider crate in _crateNearFork)
+                    Collider closestCrate = _bombNearFork.First();
+                    foreach (Collider crate in _bombNearFork)
                     {
                         if (Vector3.Distance(closestCrate.transform.position, this.transform.position) >
                             Vector3.Distance(crate.transform.position, this.transform.position))
@@ -70,9 +68,10 @@ public class Forkinteractor : MonoBehaviour
                         }
                     };
                     closestCrate.transform.SetParent(this.transform);
-                    closestCrate.transform.localPosition = _cratePositionOffset.localPosition;
+                    closestCrate.transform.localPosition = _BombPositionOffset.localPosition;
                     closestCrate.transform.localRotation = Quaternion.identity;
-                    _heldCrate = closestCrate;
+                    _heldBomb = closestCrate;
+                    _heldBomb.GetComponent<Holdables.Holdable>().HoldObject();
 
                     _itemPickupSound.Play();
                 }
