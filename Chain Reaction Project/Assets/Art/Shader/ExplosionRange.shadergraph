@@ -2078,7 +2078,7 @@
     },
     "m_Name": "WarningSignsColor",
     "m_DefaultReferenceName": "Color_78a4e5a2020d492d894e0e583b04e8e4",
-    "m_OverrideReferenceName": "",
+    "m_OverrideReferenceName": "WarningSignsColor_",
     "m_GeneratePropertyBlock": true,
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
