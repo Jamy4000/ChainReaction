@@ -5,10 +5,9 @@ namespace ChainReaction
 {
     public class ExplosionForce : MonoBehaviour
     {
-        [SerializeField, Range(.1f, 10f)] private float explosionRadius = 1;
-        [SerializeField] private float explosionForce = 20;
-
-
+        [SerializeField, Range(.1f, 10f)] private float explosionRadius = 1f;
+        [SerializeField, Range(.1f, 10f)] private float explosionForce = 2f;
+        [SerializeField] private Transform vfx;
 
         private void Awake()
         {
@@ -17,7 +16,8 @@ namespace ChainReaction
 
         private void OnDestroy() => StaticActionProvider.triggerExplosion -= Explode;
 
-        private void OnValidate() => transform.localScale = Vector3.one * explosionRadius;
+        // this will scale the model too :(
+        private void OnValidate() => vfx.localScale = Vector3.one * explosionRadius;
 
         [ContextMenu("Explode")]
         private void Explode()
@@ -30,7 +30,7 @@ namespace ChainReaction
                 {
                     Vector3 distance = hitCollider.transform.position - transform.position;
 
-                    float forceMultiplier = explosionRadius - distance.magnitude;
+                    float forceMultiplier = explosionRadius - distance.magnitude * 100f;
 
                     Vector3 direction = distance.normalized;
 
