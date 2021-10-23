@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 0156284cca052304a8f887bc9b10324e
+guid: dc5c7fc43018bff4794d101abf4f5f7e
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
@@ -7,18 +7,13 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Forklift
-    second: {fileID: 2100000, guid: 736160b4921ae3c4cb6c596185087616, type: 2}
+      name: walls
+    second: {fileID: 2100000, guid: 2a40ff58f8416474bb3bc98eab08be75, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Human
-    second: {fileID: 2100000, guid: c276f95ec5723bf4db118c56cef0af99, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: plastic_fork
-    second: {fileID: 2100000, guid: 7105dbe8c2276524095616ce54917881, type: 2}
+      name: walls.001
+    second: {fileID: 2100000, guid: b2e6da2c5ccb47c4fa65013808d3c765, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -100,7 +95,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 100
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
