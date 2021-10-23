@@ -48,6 +48,11 @@ namespace ChainReaction
 
                     totalForce += force;
                 }
+
+                //if (hitCollider.TryGetComponent(out ExplosionForce explosion))
+                //{
+                //
+                //}
             }
 
             StaticActionProvider.destructionForce?.Invoke(totalForce);
