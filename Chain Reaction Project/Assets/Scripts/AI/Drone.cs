@@ -1,5 +1,6 @@
 ﻿using System;
 using Holdables;
+using UnityEditor;
 using UnityEngine;
 
 namespace AI
@@ -26,6 +27,8 @@ namespace AI
         [Header("References"), SerializeField]
         private PickerUpper pickerUpper;
 
+        [SerializeField] private AudioSource explosionSound;
+        
         [Header("Pick Up"), SerializeField, Range(.5f, 10f)]
         private float pickUpRange = 1f;
 
@@ -83,6 +86,11 @@ namespace AI
             return false;
         }
 
+        internal void Kill()
+        {
+            explosionSound.Play();
+        }
+
         private enum State
         {
             Idle,
@@ -93,4 +101,18 @@ namespace AI
             Dead
         }
     }
+    
+#if UNITY_EDITOR
+    [CustomEditor(typeof(Drone))]
+    public class DroneEditor : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            if (GUILayout.Button("Kill"))
+                ((Drone)target).Kill();
+
+            DrawDefaultInspector();
+        }
+    }
+#endif
 }
