@@ -66,6 +66,7 @@ public class ConveyorBelt : MonoBehaviour
                 }
                 else
                 {
+                    _item.Held -= pickup;
                     _item = null;
                 }
             }

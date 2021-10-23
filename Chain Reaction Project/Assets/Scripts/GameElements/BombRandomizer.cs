@@ -32,7 +32,6 @@ public class BombRandomizer : MonoBehaviour
     private void DropBomb()
     {
         int chosenConveyor = Random.Range(0, conveyors.Count);
-        Debug.Log(chosenConveyor);
         Holdable newBomb = Instantiate(bomb);
         bomb.Held += OnBombPick;
         conveyors[chosenConveyor].AddItemForBelt(newBomb);
