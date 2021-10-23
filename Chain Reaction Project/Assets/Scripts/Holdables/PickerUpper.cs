@@ -36,6 +36,15 @@ namespace Holdables
             currentHoldable.DropObject();
             currentHoldable = null;
         }
+
+        internal void KillHoldable()
+        {
+            if (null != currentHoldable)
+            {
+                Destroy(currentHoldable);
+                currentHoldable = null;
+            }
+        }
     }
 
 #if UNITY_EDITOR
