@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using ChainReaction;
+using UnityEditor;
 using UnityEngine;
 
 namespace Holdables
@@ -21,6 +22,8 @@ namespace Holdables
 
             holdable.HoldObject();
             currentHoldable = holdable;
+            
+            StaticActionProvider.recalculateChainReaction?.Invoke();
         }
 
         internal void PutHoldableDown()
@@ -35,6 +38,8 @@ namespace Holdables
 
             currentHoldable.DropObject();
             currentHoldable = null;
+            
+            StaticActionProvider.recalculateChainReaction?.Invoke();
         }
 
         internal void KillHoldable()

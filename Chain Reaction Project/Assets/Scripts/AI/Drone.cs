@@ -1,14 +1,10 @@
-﻿using Holdables;
-using UnityEditor;
+﻿using System.Collections.Generic;
+using Holdables;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace AI
 {
-    //when drone dies, play electro vfx + sfx
-
-    //killing drones should give points (talk to leonid)
-
     //TODO: audio
     //explosion
     //drive around
@@ -24,7 +20,7 @@ namespace AI
 
         [SerializeField] private AudioSource moveSound;
 
-        [SerializeField] private Holdable cratePrefab;
+        [SerializeField] private List<Holdable> cratePrefabs = new List<Holdable>();
 
         [Header("Pick Up"), SerializeField, Range(.5f, 10f)]
         private float pickUpRange = 1f;
@@ -47,15 +43,13 @@ namespace AI
             pickerUpper.KillHoldable();
         }
 
-        internal void Kill() => gameObject.SetActive(false); //TODO: play explosion with sound
-
         internal void GiveAssignment(Assignment newAssignment)
         {
             assignment = newAssignment;
             navMeshAgent.SetDestination(newAssignment.Target);
 
             if (newAssignment is BringCrateAssignment)
-                pickerUpper.PickHoldableUp(Instantiate(cratePrefab));
+                pickerUpper.PickHoldableUp(Instantiate(cratePrefabs[Random.Range(0, cratePrefabs.Count)]));
         }
 
         private bool IsTargetClose()
@@ -67,7 +61,10 @@ namespace AI
                 return false;
             }
 
-            return Vector3.SqrMagnitude(assignment.Target - transform.position) < pickUpRange * pickUpRange;
+            Vector3 distanceVector = assignment.Target - transform.position;
+            Vector3 flatDistance   = new Vector3(distanceVector.x, 0f, distanceVector.z);
+
+            return Vector3.SqrMagnitude(flatDistance) < pickUpRange * pickUpRange;
         }
 
         internal void GoHome() => GiveAssignment(new GoHomeAssignment(DroneDispatch.Instance.GetRandomSpawnPoint()));
@@ -119,24 +116,12 @@ namespace AI
             public override void Finish(Drone drone)
             {
                 drone.pickerUpper.KillHoldable();
-                drone.gameObject.SetActive(false);
+                GameObject o = drone.gameObject;
+                o.SetActive(false);
+                Destroy(o);
             }
         }
 
         #endregion
     }
-
-#if UNITY_EDITOR
-    [CustomEditor(typeof(Drone))]
-    public class DroneEditor : Editor
-    {
-        public override void OnInspectorGUI()
-        {
-            if (GUILayout.Button("Kill"))
-                ((Drone)target).Kill();
-
-            DrawDefaultInspector();
-        }
-    }
-#endif
 }
