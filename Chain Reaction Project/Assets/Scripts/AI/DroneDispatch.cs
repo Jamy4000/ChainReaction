@@ -52,13 +52,13 @@ namespace AI
         {
             while (Application.isPlaying)
             {
-                if (DoWeNeedMoreDrones())
+                if (NeedMoreDrones())
                     SpawnDrone();
 
                 yield return new WaitForSeconds(spawnCooldownTime);
             }
 
-            bool DoWeNeedMoreDrones()
+            bool NeedMoreDrones()
             {
                 int current = dronePool.InUse.Count();
 

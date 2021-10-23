@@ -42,23 +42,21 @@ namespace AI
 
         private void Update()
         {
-            
+            if (IsTargetClose())
+            {
+                
+            }
         }
 
-        private bool TryTakeHoldable()
-        {
+        private bool TryTakeHoldable() =>
             //bool blub = (approachingHoldable.transform.position - transform.position).sqrMagnitude < pickUpRange * pickUpRange;
             //bool blub2 = Vector3.SqrMagnitude(approachingHoldable.transform.position - transform.position) < pickUpRange * pickUpRange;
-
-           //if (Vector3.Distance(approachingHoldable.transform.position, transform.position) < pickUpRange)
-           //{
-           //    pickerUpper.PickHoldableUp(approachingHoldable);
-
-           //    return true;
-           //}//
-
-            return false;
-        }
+            //if (Vector3.Distance(approachingHoldable.transform.position, transform.position) < pickUpRange)
+            //{
+            //    pickerUpper.PickHoldableUp(approachingHoldable);
+            //    return true;
+            //}//
+            false;
 
         internal void Kill()
         {
@@ -66,11 +64,18 @@ namespace AI
             gameObject.SetActive(false); //TODO: make sound play again
         }
 
-        public void GiveAssignment(Assignment assignment)
+        public void GiveAssignment(Assignment newAssignment)
         {
-            this.assignment = assignment;
-
-            navMeshAgent.SetDestination(assignment.Target);
+            assignment = newAssignment;
+            navMeshAgent.SetDestination(newAssignment.Target);
+        }
+        
+        private bool IsTargetClose()
+        {
+            if (assignment is null)
+                return false;
+            
+            return Vector3.SqrMagnitude(assignment.Target - transform.position) < pickUpRange * pickUpRange;
         }
 
         public abstract class Assignment
@@ -90,8 +95,12 @@ namespace AI
             public BringCrateAssignment(Vector3 position) { Target = position; }
             public override Vector3 Target { get; }
         }
-        
-        //public class GoHomeAssignment
+
+        public class GoHomeAssignment : Assignment
+        {
+            public GoHomeAssignment(Vector3 position) { Target = position; }
+            public override Vector3 Target { get; }
+        }
     }
 
 #if UNITY_EDITOR
