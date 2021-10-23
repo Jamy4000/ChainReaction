@@ -18,7 +18,11 @@ namespace AI
 
         [SerializeField] private NavMeshAgent navMeshAgent;
 
-        [SerializeField] private AudioSource moveSound;
+        [SerializeField] private AudioSource moveSource;
+        [SerializeField] private AudioSource sfxSource;
+        [SerializeField] private AudioClip   spawnSound;
+        [SerializeField] private AudioClip   beepSound;
+        [SerializeField] private AudioClip   pickUpSound;
 
         [SerializeField] private List<Holdable> cratePrefabs = new List<Holdable>();
 
@@ -26,6 +30,12 @@ namespace AI
         private float pickUpRange = 1f;
 
         public Assignment assignment;
+
+        private void Start()
+        {
+            moveSource.Play();
+            sfxSource.PlayOneShot(spawnSound);
+        }
 
         private void Update()
         {
@@ -35,8 +45,8 @@ namespace AI
 
         public void RefreshInitialState()
         {
-            moveSound.pitch = 1 + Random.Range(-.2f, .2f);
-            moveSound.Play();
+            moveSource.pitch = Random.Range(-1f, 1f);
+            moveSource.Play();
 
             assignment = null;
 
@@ -69,7 +79,9 @@ namespace AI
 
         internal void GoHome() => GiveAssignment(new GoHomeAssignment(DroneDispatch.Instance.GetRandomSpawnPoint()));
 
-        internal void KillHoldable() => pickerUpper.KillHoldable();
+        internal void KillHoldable()    => pickerUpper.KillHoldable();
+        internal void PlayPickUpSound() => sfxSource.PlayOneShot(pickUpSound);
+        internal void PlayBeepUpSound() => sfxSource.PlayOneShot(beepSound);
 
         #region Assignments
 
@@ -90,7 +102,10 @@ namespace AI
             public override void Finish(Drone drone)
             {
                 if (holdable != null && holdable.IsPutDown)
+                {
                     drone.pickerUpper.PickHoldableUp(holdable);
+                    drone.PlayPickUpSound();
+                }
 
                 drone.GoHome();
             }
@@ -104,6 +119,7 @@ namespace AI
             public override void Finish(Drone drone)
             {
                 drone.pickerUpper.PutHoldableDown();
+                drone.PlayPickUpSound();
                 drone.GoHome();
             }
         }
