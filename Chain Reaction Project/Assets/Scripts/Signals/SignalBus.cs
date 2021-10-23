@@ -5,5 +5,5 @@ using UnityEngine;
 
 public class SignalBus
 {
-    public static Signal ExampleSignal { get; } = new Signal();
+    public static Signal GameOver { get; } = new Signal();
 }
