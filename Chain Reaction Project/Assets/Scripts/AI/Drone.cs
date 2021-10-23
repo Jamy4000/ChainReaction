@@ -2,6 +2,7 @@
 using Holdables;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace AI
 {
@@ -13,8 +14,6 @@ namespace AI
     
     //when drone dies, play electro vfx + sfx
     
-    //TODO: drone spawn points
-    //increase spawn rate over time
     
     //drone AI:
     //spawns with or without crate
@@ -33,6 +32,8 @@ namespace AI
         [Header("References"), SerializeField]
         private PickerUpper pickerUpper;
 
+        [SerializeField] private NavMeshAgent navMeshAgent;
+
         [SerializeField] private AudioSource explosionSound;
         
         [Header("Pick Up"), SerializeField, Range(.5f, 10f)]
@@ -41,7 +42,7 @@ namespace AI
         private readonly State    currentState = State.Idle;
         private          Holdable approachingHoldable;
         private          Holdable currentHoldable;
-
+        
         private void Update() => UpdateState();
 
         private void SetState(State state)
@@ -51,9 +52,13 @@ namespace AI
                 case State.Idle:       break;
                 case State.Patrolling: break;
                 case State.Searching:  break;
-                case State.Retrieving: break;
+                case State.Retrieving:
+                    navMeshAgent.SetDestination(approachingHoldable.transform.position);
+                    break;
                 case State.Bringing:   break;
-                case State.Dead:       break;
+                case State.Dead:
+                    //navMeshAgent.isStopped = true;
+                    break;
                 default:               throw new ArgumentOutOfRangeException(nameof(state), state, null);
             }
         }
@@ -94,6 +99,7 @@ namespace AI
         internal void Kill()
         {
             explosionSound.Play();
+            gameObject.SetActive(false);//TODO: make sound play again
         }
 
         private enum State
@@ -104,6 +110,12 @@ namespace AI
             Retrieving,
             Bringing,
             Dead
+        }
+
+        public void GiveAssignment(Holdable target)
+        {
+            approachingHoldable = target;
+            SetState(State.Retrieving);
         }
     }
     
