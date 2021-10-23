@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
     [Range(0f,10f)]
     private float MovemntSpeed;
     [SerializeField]
-    [Tooltip("Change the turning speed of the player,the higher the number the faster the trurning")]
+    [Tooltip("Change the turning speed of the player,the higher the number the faster the turning")]
     [Range(0f, 10f)]
     private float TurningSpeed;
     [SerializeField]
@@ -33,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
         _Rigidbody.velocity = new Vector3(X,0, Z);
 
         Vector3 vel = _Rigidbody.velocity;
-        vel.y = 0.0f;
+        //vel.y = 0.0f;
         if (vel.x != 0 || vel.z != 0)
         {
             _Rigidbody.transform.forward = Vector3.Lerp(_Rigidbody.transform.forward, vel, TurningSpeed * Time.deltaTime);

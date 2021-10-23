@@ -10,5 +10,7 @@ namespace ChainReaction
         public static Action<int> setExplosivesCount;
 
         public static Action<int> explosivesPlaced;
+
+        public static Action triggerExplosion;
     }
 }
