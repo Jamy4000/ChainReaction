@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Forkinteractor : MonoBehaviour
 {
     [SerializeField]
     private Vector3 _cratePositionOffset;
-    private List<Collider> _crateNearFork = new List<Collider>();
+    private HashSet<Collider> _crateNearFork = new HashSet<Collider>();
 
     [SerializeField]
     private Transform _dropPositionOffset;
@@ -45,7 +46,7 @@ public class Forkinteractor : MonoBehaviour
                 // Picking up crate
                 if (_crateNearFork.Count > 0)
                 {
-                    Collider closestCrate = _crateNearFork[0];
+                    Collider closestCrate = _crateNearFork.First();
                     foreach (Collider crate in _crateNearFork)
                     {
                         if (Vector3.Distance(closestCrate.transform.position, this.transform.position) >
