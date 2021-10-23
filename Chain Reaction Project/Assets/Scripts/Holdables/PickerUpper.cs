@@ -11,7 +11,7 @@ namespace Holdables
 
         internal void PickHoldableUp(Holdable holdable)
         {
-            if (holdable == null)
+            if (holdable == null || !holdable.IsPutDown)
                 return;
 
             Transform trans = holdable.transform;
@@ -19,6 +19,7 @@ namespace Holdables
             trans.SetParent(transform);
             trans.localPosition = Vector3.zero;
 
+            holdable.HoldObject();
             currentHoldable = holdable;
         }
 
@@ -32,6 +33,7 @@ namespace Holdables
             trans.SetParent(null);
             trans.position = PutDownPosition;
 
+            currentHoldable.DropObject();
             currentHoldable = null;
         }
     }
