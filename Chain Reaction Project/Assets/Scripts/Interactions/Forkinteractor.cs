@@ -23,7 +23,7 @@ public class Forkinteractor : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(TagsHolder.BOMB_TAG)||other.CompareTag(TagsHolder.CRATE_TAG))
+        if (other.CompareTag(TagsHolder.BOMB_TAG) || other.CompareTag(TagsHolder.CRATE_TAG))
         {
             _PickableNearFork.Add(other);
         }

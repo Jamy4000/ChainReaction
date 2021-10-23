@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace ChainReaction
 {
@@ -14,5 +13,7 @@ namespace ChainReaction
         public static Action<float> destructionForce;
 
         public static Action triggerExplosion;
+
+        public static Action recalculateChainReaction;
     }
 }
