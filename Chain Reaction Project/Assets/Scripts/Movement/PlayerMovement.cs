@@ -21,6 +21,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private AudioSource _idleSound;
     [SerializeField]
+    private AudioSource _horn;
+    [SerializeField]
     private float _soundWaitingTime = 0.5f;
 
     private bool _isMoving = false;
@@ -68,6 +70,11 @@ public class PlayerMovement : MonoBehaviour
                     _idleSound.Play();
                 } 
             }
+        }
+
+        if (Input.GetKeyDown("h"))
+        {
+            _horn.Play();
         }
     }
 }
