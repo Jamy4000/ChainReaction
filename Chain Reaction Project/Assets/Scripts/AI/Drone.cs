@@ -119,7 +119,9 @@ namespace AI
             public override void Finish(Drone drone)
             {
                 drone.pickerUpper.KillHoldable();
-                drone.gameObject.SetActive(false);
+                GameObject o = drone.gameObject;
+                o.SetActive(false);
+                Destroy(o);
             }
         }
 

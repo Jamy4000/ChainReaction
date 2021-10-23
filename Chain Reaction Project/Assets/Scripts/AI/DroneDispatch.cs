@@ -34,15 +34,11 @@ namespace AI
         [SerializeField, Range(0, 100)]
         private float spawnCooldownTime = 3f;
 
-        private PrefabObjectPool<Drone> dronePool;
-
         private float timeSinceLevelStart;
 
         private IEnumerable<Holdable> AvailableHoldables =>
             HoldableCollector.collection.Where(holdable => holdable.IsPutDown);
-
-        private void Awake() => dronePool = new PrefabObjectPool<Drone>(dronePrefab, transform);
-
+        
         private void Start() => StartCoroutine(SpawnRoutine());
 
         private void Update() => timeSinceLevelStart += Time.deltaTime;
@@ -59,7 +55,7 @@ namespace AI
 
             bool NeedMoreDrones()
             {
-                int current = dronePool.InUse.Count();
+                int current = DroneCollecter.collection.Count;
 
                 uint wished = timeSinceLevelStart < secondsBeforeRampUp                  ? minDrones :
                     timeSinceLevelStart           < secondsBeforeRampUp + rampUpDuration ? RampFactor() : maxDrones;
@@ -73,7 +69,7 @@ namespace AI
 
         private void SpawnDrone()
         {
-            Drone drone = dronePool.Next();
+            Drone drone = Instantiate(dronePrefab);
             drone.RefreshInitialState();
 
             drone.transform.position = GetRandomSpawnPoint();
