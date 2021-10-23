@@ -13,9 +13,8 @@ namespace AI
         [Header("References"), SerializeField]
         private Drone dronePrefab;
 
-        //TODO: drone spawn points
-        //increase spawn rate over time
-        [SerializeField] private List<Transform> spawnPoints = new List<Transform>();
+        [SerializeField] private List<Transform> spawnPoints   = new List<Transform>();
+        [SerializeField] private List<Transform> dropOffPoints = new List<Transform>();
 
         [Header("Spawn Rate"), SerializeField]
         private AnimationCurve curve;
@@ -75,11 +74,22 @@ namespace AI
         private void SpawnDrone()
         {
             Drone drone = dronePool.Next();
+            drone.RefreshInitialState();
+
             drone.transform.position = GetRandomSpawnPoint();
 
-            drone.GiveAssignment(new Drone.BringCrateAssignment(Vector3.forward * 10f));
-            //give assignment
-            //sometimes give Crate
+            Drone.Assignment assignment;
+
+            if (AvailableHoldables.Count() == 0 || Random.value < .5)
+                assignment =
+                    new Drone.BringCrateAssignment(dropOffPoints[Random.Range(0, dropOffPoints.Count)].position);
+            else
+            {
+                List<Holdable> available = AvailableHoldables.ToList();
+                assignment = new Drone.RetrieveCrateAssignment(available[Random.Range(0, available.Count)]);
+            }
+
+            drone.GiveAssignment(assignment);
         }
 
         public Vector3 GetRandomSpawnPoint()
