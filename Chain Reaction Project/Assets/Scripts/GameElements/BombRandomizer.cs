@@ -24,8 +24,8 @@ public class BombRandomizer : MonoBehaviour
     {
         if (_toDrop)
         {
-            DropBomb();
             _toDrop = false;
+            DropBomb();
         }
     }
 
