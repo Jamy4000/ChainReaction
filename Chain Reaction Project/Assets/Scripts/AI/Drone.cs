@@ -1,5 +1,4 @@
-﻿using System;
-using Holdables;
+﻿using Holdables;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
@@ -11,16 +10,15 @@ namespace AI
     //drones take boxes away from warehouse
     //drones move boxes around in warehouse
     //sometimes, drones pick up bombs
-    
+
     //when drone dies, play electro vfx + sfx
-    
-    
+
     //drone AI:
     //spawns with or without crate
     //once has no crate, pick a crate to take up, or leave zone
-    
+
     //killing drones should give points (talk to leonid)
-    
+
     //TODO: audio
     //explosion
     //drive around
@@ -35,59 +33,29 @@ namespace AI
         [SerializeField] private NavMeshAgent navMeshAgent;
 
         [SerializeField] private AudioSource explosionSound;
-        
+
         [Header("Pick Up"), SerializeField, Range(.5f, 10f)]
         private float pickUpRange = 1f;
 
-        private readonly State    currentState = State.Idle;
-        private          Holdable approachingHoldable;
-        private          Holdable currentHoldable;
-        
-        private void Update() => UpdateState();
+        public  Assignment assignment;
+        private Holdable   currentHoldable;
 
-        private void SetState(State state)
+        private void Update()
         {
-            switch (state)
-            {
-                case State.Idle:       break;
-                case State.Retrieving:
-                    navMeshAgent.SetDestination(approachingHoldable.transform.position);
-                    break;
-                case State.Bringing:   break;
-                case State.Dead:
-                    //navMeshAgent.isStopped = true;
-                    break;
-                default:               throw new ArgumentOutOfRangeException(nameof(state), state, null);
-            }
-        }
-
-        private void UpdateState()
-        {
-            switch (currentState)
-            {
-                case State.Idle:       break;
-                case State.Retrieving:
-                    if (TryTakeHoldable())
-                        SetState(State.Bringing);
-
-                    break;
-                case State.Bringing: break;
-                case State.Dead:     break;
-                default:             throw new ArgumentOutOfRangeException();
-            }
+            
         }
 
         private bool TryTakeHoldable()
         {
-            bool blub = (approachingHoldable.transform.position - transform.position).sqrMagnitude < pickUpRange * pickUpRange;
-            bool blub2 = Vector3.SqrMagnitude(approachingHoldable.transform.position - transform.position) < pickUpRange * pickUpRange;
-            
-            if (Vector3.Distance(approachingHoldable.transform.position, transform.position) < pickUpRange)
-            {
-                pickerUpper.PickHoldableUp(approachingHoldable);
+            //bool blub = (approachingHoldable.transform.position - transform.position).sqrMagnitude < pickUpRange * pickUpRange;
+            //bool blub2 = Vector3.SqrMagnitude(approachingHoldable.transform.position - transform.position) < pickUpRange * pickUpRange;
 
-                return true;
-            }
+           //if (Vector3.Distance(approachingHoldable.transform.position, transform.position) < pickUpRange)
+           //{
+           //    pickerUpper.PickHoldableUp(approachingHoldable);
+
+           //    return true;
+           //}//
 
             return false;
         }
@@ -95,24 +63,37 @@ namespace AI
         internal void Kill()
         {
             explosionSound.Play();
-            gameObject.SetActive(false);//TODO: make sound play again
+            gameObject.SetActive(false); //TODO: make sound play again
         }
 
-        private enum State
+        public void GiveAssignment(Assignment assignment)
         {
-            Idle,
-            Retrieving,
-            Bringing,
-            Dead
+            this.assignment = assignment;
+
+            navMeshAgent.SetDestination(assignment.Target);
         }
 
-        public void GiveAssignment(Holdable target)
+        public abstract class Assignment
         {
-            approachingHoldable = target;
-            SetState(State.Retrieving);
+            public abstract Vector3 Target { get; }
         }
+
+        public class RetrieveCrateAssignment : Assignment
+        {
+            public Holdable holdable;
+            public RetrieveCrateAssignment(Holdable holdable) { this.holdable = holdable; }
+            public override Vector3 Target => holdable.transform.position;
+        }
+
+        public class BringCrateAssignment : Assignment
+        {
+            public BringCrateAssignment(Vector3 position) { Target = position; }
+            public override Vector3 Target { get; }
+        }
+        
+        //public class GoHomeAssignment
     }
-    
+
 #if UNITY_EDITOR
     [CustomEditor(typeof(Drone))]
     public class DroneEditor : Editor
