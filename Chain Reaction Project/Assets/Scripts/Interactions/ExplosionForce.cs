@@ -8,9 +8,9 @@ namespace ChainReaction
     public class ExplosionForce : MonoBehaviour
     {
         [SerializeField] private GameObject model;
-        [SerializeField] private GameObject explosionRangeShader;
+        public GameObject explosionRangeShader;
 
-        [SerializeField, Range(.1f, 10f)] private float explosionRadius = 1f;
+        [Range(.1f, 10f)] public float explosionRadius = 1f;
         [SerializeField, Range(.1f, 10f)] private float explosionForce = 2f;
         [SerializeField] private Vector3 explosionOffset = new Vector3(0, 1, 0);
 
@@ -26,7 +26,7 @@ namespace ChainReaction
         }
 
         [ContextMenu("Explode")]
-        private void Explode()
+        public void Explode()
         {
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, explosionRadius);
 
