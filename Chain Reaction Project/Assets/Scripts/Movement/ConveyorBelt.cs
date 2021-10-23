@@ -16,6 +16,7 @@ public class ConveyorBelt : MonoBehaviour
     [SerializeField]
     private Transform _dropPosition;
     [SerializeField]
+    private Transform _midPosition;
     private bool _atEndPoint = false;
 
     private Holdable _item;
@@ -23,8 +24,15 @@ public class ConveyorBelt : MonoBehaviour
     public void AddItemForBelt(Holdable Item)
     {
         _item = Item;
-
+        _item.Held += pickup;
         _item.transform.position = _startPosition.position;
+    }
+
+    private void pickup(Holdable holdable)
+    {
+        _item.Held -= pickup;
+        _item = null;
+
     }
 
     // Update is called once per frame
@@ -34,15 +42,22 @@ public class ConveyorBelt : MonoBehaviour
         {
             if (!_atEndPoint)
             {
-                if (Vector3.Distance(_item.transform.position,_endPosition.position)>0.05f)
+                if (Vector3.Distance(_item.transform.position, _midPosition.position) > 0.05f)
+                {
+                    _item.transform.position = Vector3.MoveTowards(_item.transform.position, _midPosition.position, _speedOfItem * Time.deltaTime);
+
+                }
+                else if (Vector3.Distance(_item.transform.position, _endPosition.position) > 0.05f)
                 {
                     _item.transform.position = Vector3.MoveTowards(_item.transform.position, _endPosition.position, _speedOfItem * Time.deltaTime);
                 }
-                else
+                if (Vector3.Distance(_item.transform.position, _endPosition.position) > 0.05f)
                 {
                     _atEndPoint = true;
                 }
+
             }
+
             else
             {
                 if (Vector3.Distance(_item.transform.position, _dropPosition.position) > 0.05f)
