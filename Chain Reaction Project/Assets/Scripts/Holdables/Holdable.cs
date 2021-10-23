@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using ChainReaction;
+using UnityEngine;
 
 namespace Holdables
 {
@@ -13,7 +14,9 @@ namespace Holdables
         public void HoldObject()
         {
             IsPutDown = false;
+            StaticActionProvider.recalculateChainReaction?.Invoke();
             OnObjectHold();
+
         }
 
         protected virtual void OnObjectHold()
@@ -23,6 +26,7 @@ namespace Holdables
 
         public void DropObject()
         {
+            StaticActionProvider.recalculateChainReaction?.Invoke();
             IsPutDown = true;
             OnObjectDropped();
         }
