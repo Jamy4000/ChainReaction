@@ -17,6 +17,8 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody _Rigidbody;
 
     [SerializeField]
+    private AudioSource _collision;
+    [SerializeField]
     private AudioSource _maxSpeed;
     [SerializeField]
     private AudioSource _idleSound;
@@ -69,5 +71,10 @@ public class PlayerMovement : MonoBehaviour
                 } 
             }
         }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        _collision.Play();
     }
 }
