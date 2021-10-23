@@ -38,10 +38,10 @@ public class PlayerMovement : MonoBehaviour
         X = Input.GetAxis("Horizontal") * MovemntSpeed;
         Z = Input.GetAxis("Vertical") * MovemntSpeed;
 
-        _Rigidbody.velocity = new Vector3(X,0, Z);
+        _Rigidbody.velocity = new Vector3(X, _Rigidbody.velocity.y, Z);
 
         Vector3 vel = _Rigidbody.velocity;
-        //vel.y = 0.0f;
+
         if (vel.x != 0 || vel.z != 0)
         {
             if (!_isMoving)
