@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Holdables;
 using UnityEngine;
 
 public class ConveyorBelt : MonoBehaviour
@@ -16,10 +18,9 @@ public class ConveyorBelt : MonoBehaviour
     [SerializeField]
     private bool _atEndPoint = false;
 
-    private Collider _item;
+    private Holdable _item;
 
-    
-    public void AddItemForBelt(Collider Item)
+    public void AddItemForBelt(Holdable Item)
     {
         _item = Item;
 
@@ -44,8 +45,14 @@ public class ConveyorBelt : MonoBehaviour
             }
             else
             {
-                _item.transform.position = Vector3.MoveTowards(_item.transform.position, _dropPosition.position, _speedOfItem * Time.deltaTime);
-
+                if (Vector3.Distance(_item.transform.position, _dropPosition.position) > 0.05f)
+                {
+                    _item.transform.position = Vector3.MoveTowards(_item.transform.position, _dropPosition.position, _speedOfItem * Time.deltaTime);
+                }
+                else
+                {
+                    _item = null;
+                }
             }
         }
     }

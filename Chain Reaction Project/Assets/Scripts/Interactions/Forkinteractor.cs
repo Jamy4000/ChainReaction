@@ -23,6 +23,11 @@ public class Forkinteractor : MonoBehaviour
         {
             _crateNearFork.Add(other);
         }
+        
+        //TODO: add drone interaction
+        //if player has bomb, player dies
+        //else only drone dies
+        
     }
 
     private void OnTriggerExit(Collider other)
