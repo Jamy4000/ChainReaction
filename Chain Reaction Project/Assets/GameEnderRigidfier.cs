@@ -15,7 +15,6 @@ public class GameEnderRigidfier : MonoBehaviour
     {
         
         Rigidbody tmp = this.gameObject.AddComponent(typeof(Rigidbody)) as Rigidbody;
-        tmp.AddForce(new Vector3(200,1000,3000));
         SignalBus.GameOver.StopListening(BecomeRigid);
     }
 
