@@ -6,10 +6,13 @@ using UnityEngine;
 public class BombRandomizer : MonoBehaviour
 {
     [SerializeField]
-    private Holdable bomb;
+    private List<Holdable> bombType = new List<Holdable>();
 
     [SerializeField]
     private List<ConveyorBelt> conveyors;
+
+    public List<Holdable> BombList = new List<Holdable>();
+
 
     private bool _toDrop;   // Change functionality to be true after every pick
 
@@ -32,14 +35,15 @@ public class BombRandomizer : MonoBehaviour
     private void DropBomb()
     {
         int chosenConveyor = Random.Range(0, conveyors.Count);
-        Holdable newBomb = Instantiate(bomb);
-        bomb.Held += OnBombPick;
+        Holdable newBomb = Instantiate(bombType[Random.Range(0, bombType.Count)]);
+        BombList.Add(newBomb);
+        newBomb.Held += OnBombPick;
         conveyors[chosenConveyor].AddItemForBelt(newBomb);
     }
 
     private void OnBombPick(Holdable bomb)
     {
         bomb.Held -= OnBombPick;
-        DropBomb();
+        _toDrop = true;
     }
 }
