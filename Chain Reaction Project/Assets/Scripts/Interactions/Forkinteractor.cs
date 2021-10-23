@@ -26,7 +26,6 @@ public class Forkinteractor : MonoBehaviour
         if (other.CompareTag(TagsHolder.BOMB_TAG) || other.CompareTag(TagsHolder.CRATE_TAG))
         {
             _PickableNearFork.Add(other);
-            Debug.Log("enter: " + _PickableNearFork.Count());
         }
 
         //TODO: add drone interaction
@@ -40,7 +39,6 @@ public class Forkinteractor : MonoBehaviour
         if (other.CompareTag(TagsHolder.BOMB_TAG) || other.CompareTag(TagsHolder.CRATE_TAG))
         {
             _PickableNearFork.Remove(other);
-            Debug.Log("exit: " + _PickableNearFork.Count());
         }
     }
 
