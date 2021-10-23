@@ -86,13 +86,15 @@ namespace AI
         {
             public Holdable holdable;
             public RetrieveCrateAssignment(Holdable holdable) { this.holdable = holdable; }
-            public override Vector3 Target => holdable!= null ? holdable.transform.position : Vector3.zero;
+
+            public override Vector3 Target =>
+                holdable != null && holdable.IsPutDown ? holdable.transform.position : Vector3.zero;
 
             public override void Finish(Drone drone)
             {
-                if(holdable != null)
+                if (holdable != null && holdable.IsPutDown)
                     drone.pickerUpper.PickHoldableUp(holdable);
-                
+
                 drone.GoHome();
             }
         }
