@@ -12,6 +12,7 @@ namespace ChainReaction
 
         [SerializeField, Range(.1f, 10f)] private float explosionRadius = 1f;
         [SerializeField, Range(.1f, 10f)] private float explosionForce = 2f;
+        [SerializeField] private Vector3 explosionOffset = new Vector3(0, 1, 0);
 
         [SerializeField] private GameObject explosionVFXPrefab;
 
@@ -51,7 +52,7 @@ namespace ChainReaction
 
             StaticActionProvider.destructionForce?.Invoke(totalForce);
 
-            GameObject vfx = Instantiate(explosionVFXPrefab, transform.position, Quaternion.identity, transform.parent);
+            GameObject vfx = Instantiate(explosionVFXPrefab, transform.position + explosionOffset, Quaternion.identity, transform.parent);
             vfx.transform.localScale = Vector3.one * explosionRadius;
 
             model.SetActive(false);
