@@ -5,14 +5,17 @@ using System.Linq;
 
 public class Forkinteractor : MonoBehaviour
 {
+    
+    private HashSet<Collider> _crateNearFork = new HashSet<Collider>();
+    private Collider _heldCrate = null;
+
     [SerializeField]
     private Transform _cratePositionOffset;
-    private HashSet<Collider> _crateNearFork = new HashSet<Collider>();
 
     [SerializeField]
     private Transform _dropPositionOffset;
 
-    private Collider _heldCrate = null;
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -63,4 +66,6 @@ public class Forkinteractor : MonoBehaviour
             }
         }
     }
+
+
 }
