@@ -4,6 +4,23 @@ using UnityEngine;
 
 namespace AI
 {
+    //TODO: drones bring boxes into warehouse
+    //some drones spawn with boxes, some without
+    //drones take boxes away from warehouse
+    //drones move boxes around in warehouse
+    //sometimes, drones pick up bombs
+    
+    //when drone dies, play electro vfx + sfx
+    
+    //TODO: drone spawn points
+    //increase spawn rate over time
+    
+    //drone AI:
+    //spawns with or without crate
+    //once has no crate, pick a crate to take up, or leave zone
+    
+    //killing drones should give points (talk to leonid)
+    
     public class Drone : MonoBehaviour
     {
         [Header("References"), SerializeField]
@@ -52,6 +69,10 @@ namespace AI
 
         private bool TryTakeHoldable()
         {
+            
+            bool blub = (approachingHoldable.transform.position - transform.position).sqrMagnitude < pickUpRange * pickUpRange;
+            bool blub2 = Vector3.SqrMagnitude(approachingHoldable.transform.position - transform.position) < pickUpRange * pickUpRange;
+            
             if (Vector3.Distance(approachingHoldable.transform.position, transform.position) < pickUpRange)
             {
                 pickerUpper.PickHoldableUp(approachingHoldable);
