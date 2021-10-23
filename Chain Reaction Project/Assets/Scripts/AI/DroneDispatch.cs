@@ -26,6 +26,9 @@ namespace AI
         {
             Drone drone = dronePool.Next();
             drone.transform.position = GetRandomSpawnPoint();
+            
+            //sometimes give Crate
+            //give assignment
         }
 
         public Vector3 GetRandomSpawnPoint()

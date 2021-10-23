@@ -50,8 +50,6 @@ namespace AI
             switch (state)
             {
                 case State.Idle:       break;
-                case State.Patrolling: break;
-                case State.Searching:  break;
                 case State.Retrieving:
                     navMeshAgent.SetDestination(approachingHoldable.transform.position);
                     break;
@@ -68,8 +66,6 @@ namespace AI
             switch (currentState)
             {
                 case State.Idle:       break;
-                case State.Patrolling: break;
-                case State.Searching:  break;
                 case State.Retrieving:
                     if (TryTakeHoldable())
                         SetState(State.Bringing);
@@ -105,8 +101,6 @@ namespace AI
         private enum State
         {
             Idle,
-            Patrolling,
-            Searching,
             Retrieving,
             Bringing,
             Dead
