@@ -1,19 +1,29 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ChainReaction
 {
     public class ExplosionForce : MonoBehaviour
     {
+        [SerializeField] private GameObject model;
+        [SerializeField] private GameObject explosionRangeShader;
+
         [SerializeField, Range(.1f, 10f)] private float explosionRadius = 1f;
         [SerializeField, Range(.1f, 10f)] private float explosionForce = 2f;
+        [SerializeField] private Vector3 explosionOffset = new Vector3(0, 1, 0);
 
         [SerializeField] private GameObject explosionVFXPrefab;
 
         private void Awake() => StaticActionProvider.triggerExplosion += Explode;
 
         private void OnDestroy() => StaticActionProvider.triggerExplosion -= Explode;
+
+        private void OnValidate()
+        {
+            explosionRangeShader.transform.localScale = Vector3.one * explosionRadius * 2;
+        }
 
         [ContextMenu("Explode")]
         private void Explode()
@@ -26,7 +36,7 @@ namespace ChainReaction
             {
                 if (hitCollider.TryGetComponent(out Rigidbody rigidbody))
                 {
-                    Vector3 distance = hitCollider.transform.position - transform.position;
+                    Vector3 distance = transform.position - hitCollider.transform.position;
 
                     float forceMultiplier = explosionRadius - distance.magnitude * 100f;
 
@@ -38,20 +48,20 @@ namespace ChainReaction
 
                     totalForce += force;
                 }
+
+                //if (hitCollider.TryGetComponent(out ExplosionForce explosion))
+                //{
+                //
+                //}
             }
 
             StaticActionProvider.destructionForce?.Invoke(totalForce);
 
-            GameObject vfx = Instantiate(explosionVFXPrefab, transform.position, Quaternion.identity, transform.parent);
+            GameObject vfx = Instantiate(explosionVFXPrefab, transform.position + explosionOffset, Quaternion.identity, transform.parent);
             vfx.transform.localScale = Vector3.one * explosionRadius;
 
-            Destroy(this);
-        }
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, explosionRadius);
+            model.SetActive(false);
+            explosionRangeShader.SetActive(false);
         }
     }
 }
