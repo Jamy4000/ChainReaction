@@ -3,7 +3,6 @@ using UnityEngine.UI;
 using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
-using TMPro;
 
 namespace ChainReaction.UI
 {
@@ -15,8 +14,6 @@ namespace ChainReaction.UI
     {
         protected Button button;
 
-        [SerializeField] private string buttonText;
-
         private bool isHovering = false;
         [SerializeField] private float animationDuration = 1f;
 
@@ -25,8 +22,6 @@ namespace ChainReaction.UI
 
         private Sequence scaleUpAnimation;
         private Sequence scaleDownAnimation;
-
-        void OnValidate() => GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
 
         void Awake()
         {
