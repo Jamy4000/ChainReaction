@@ -5,6 +5,10 @@ using System.Linq;
 
 public class Forkinteractor : MonoBehaviour
 {
+    [SerializeField]
+    private AudioSource _itemPickupSound;
+    [SerializeField]
+    private AudioSource _itemDropSound;
 
     private HashSet<Collider> _bombNearFork = new HashSet<Collider>();
     private Collider _heldBomb = null;
@@ -50,6 +54,8 @@ public class Forkinteractor : MonoBehaviour
                 _heldBomb.GetComponent<Holdables.Holdable>().DropObject();
 
                 _heldBomb = null;
+
+                _itemDropSound.Play();
             }
             else
             {
@@ -70,6 +76,8 @@ public class Forkinteractor : MonoBehaviour
                     closestCrate.transform.localRotation = Quaternion.identity;
                     _heldBomb = closestCrate;
                     _heldBomb.GetComponent<Holdables.Holdable>().HoldObject();
+
+                    _itemPickupSound.Play();
                 }
             }
         }
