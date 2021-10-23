@@ -22,6 +22,12 @@ namespace AI
     
     //killing drones should give points (talk to leonid)
     
+    //TODO: audio
+    //explosion
+    //drive around
+    //random beep
+    //(pick up/put down a crate)
+
     public class Drone : MonoBehaviour
     {
         [Header("References"), SerializeField]
@@ -72,7 +78,6 @@ namespace AI
 
         private bool TryTakeHoldable()
         {
-            
             bool blub = (approachingHoldable.transform.position - transform.position).sqrMagnitude < pickUpRange * pickUpRange;
             bool blub2 = Vector3.SqrMagnitude(approachingHoldable.transform.position - transform.position) < pickUpRange * pickUpRange;
             
