@@ -32,7 +32,7 @@ namespace ChainReaction
                 {
                     Vector3 distance = transform.position - hitCollider.transform.position;
 
-                    float forceMultiplier = explosionRadius - distance.magnitude * 100f;
+                    float forceMultiplier = Mathf.Abs(explosionRadius - distance.magnitude) * 100f;
 
                     Vector3 direction = distance.normalized;
 

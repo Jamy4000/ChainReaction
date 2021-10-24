@@ -24,9 +24,15 @@ public abstract class AddListenerButton : MonoBehaviour, IPointerEnterHandler, I
     private Sequence scaleUpAnimation;
     private Sequence scaleDownAnimation;
 
-    void OnValidate() => GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
+    protected void OnValidate()
+    {
+        GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
 
-    void Awake()
+        Awake();
+        button.colors = colors.colorBlock;
+    }
+
+    private void Awake()
     {
         button = GetComponent<Button>();
 
