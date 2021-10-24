@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace ChainReaction
 {
@@ -69,16 +70,13 @@ namespace ChainReaction
             chainedExplosives.Clear();
             CalculateChain(explosionForce);
 
-            List<ExplosionForce> unchained = allExplosives;
-
             foreach (var item in chainedExplosives)
             {
-                unchained.Remove(item);
                 item.explosionRangeShader.GetComponent<MeshRenderer>().material.SetColor("Color_", chainedColor);
                 item.explosionRangeShader.GetComponent<MeshRenderer>().material.SetColor("WarningSignsColor_", chainedWarningColor);
             }
 
-            foreach (var item in unchained)
+            foreach (var item in allExplosives.Where(x => !chainedExplosives.Contains(x)))
             {
                 item.explosionRangeShader.GetComponent<MeshRenderer>().material.SetColor("Color_", unchainedColor);
                 item.explosionRangeShader.GetComponent<MeshRenderer>().material.SetColor("WarningSignsColor_", unchainedWarningColor);
