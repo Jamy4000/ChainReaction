@@ -7,6 +7,6 @@ public class ActivateBomb : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        SignalBus.GameOver.Raise();        
+        SignalBus.GameOver.Raise();
     }
 }
