@@ -12,6 +12,7 @@ namespace ChainReaction
         [SerializeField] private Vector3 explosionOffset = new Vector3(0, 1, 0);
 
         [SerializeField] private GameObject explosionVFXPrefab;
+        [SerializeField] private AudioSource[] explosionSounds;
 
         private void OnValidate()
         {
@@ -50,6 +51,9 @@ namespace ChainReaction
 
             model.SetActive(false);
             explosionRangeShader.SetActive(false);
+
+            int chosenSound = Random.Range(0, explosionSounds.Length);
+            explosionSounds[chosenSound].Play();
         }
     }
 }
