@@ -238,7 +238,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7147941410413661165, guid: 0575ae0ed6b070743985f62bdbdf24a4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -16.7
+      value: 18.02
       objectReference: {fileID: 0}
     - target: {fileID: 7147941410413661165, guid: 0575ae0ed6b070743985f62bdbdf24a4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -246,7 +246,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7147941410413661165, guid: 0575ae0ed6b070743985f62bdbdf24a4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 12.4
+      value: -16.56
       objectReference: {fileID: 0}
     - target: {fileID: 7147941410413661165, guid: 0575ae0ed6b070743985f62bdbdf24a4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -550,6 +550,18 @@ PrefabInstance:
       propertyPath: Target
       value: 
       objectReference: {fileID: 1062029582}
+    - target: {fileID: 903038879447145863, guid: d734ccfb58288f14486b6f9fc2852656, type: 3}
+      propertyPath: offset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 903038879447145863, guid: d734ccfb58288f14486b6f9fc2852656, type: 3}
+      propertyPath: offset.y
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 903038879447145863, guid: d734ccfb58288f14486b6f9fc2852656, type: 3}
+      propertyPath: offset.z
+      value: -15
+      objectReference: {fileID: 0}
     - target: {fileID: 903038879447145863, guid: d734ccfb58288f14486b6f9fc2852656, type: 3}
       propertyPath: MapTopViewPoint
       value: 
