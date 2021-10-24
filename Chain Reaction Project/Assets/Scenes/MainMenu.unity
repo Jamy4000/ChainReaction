@@ -339,7 +339,7 @@ MonoBehaviour:
   buttonText: Play
   animationDuration: 1
   colors: {fileID: 11400000, guid: 14933fb08af30384580db497e72c3376, type: 2}
-  sceneToLoad: Leonids_Sandbox
+  sceneToLoad: FirstLevel
 --- !u!1 &1037693436
 GameObject:
   m_ObjectHideFlags: 0
