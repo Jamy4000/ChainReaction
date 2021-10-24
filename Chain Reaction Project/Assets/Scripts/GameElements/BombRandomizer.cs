@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using ChainReaction;
 using Holdables;
 using UnityEngine;
 
@@ -36,7 +37,11 @@ public class BombRandomizer : MonoBehaviour
     {
         int chosenConveyor = Random.Range(0, conveyors.Count);
         Holdable newBomb = Instantiate(bombType[Random.Range(0, bombType.Count)]);
+        StaticActionProvider.explosivesPlaced?.Invoke();
+
+        // TODO: connect this to the remote bomb
         BombList.Add(newBomb);
+
         newBomb.Held += OnBombPick;
         conveyors[chosenConveyor].AddItemForBelt(newBomb);
     }

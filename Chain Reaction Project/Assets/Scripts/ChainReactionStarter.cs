@@ -20,11 +20,17 @@ namespace ChainReaction
         {
             explosionForce = GetComponent<ExplosionForce>();
             StaticActionProvider.recalculateChainReaction += RecalculateChain;
+            StaticActionProvider.triggerExplosion += Explode;
+
 
             RecalculateChain();
         }
 
-        private void OnDestroy() => StaticActionProvider.recalculateChainReaction -= RecalculateChain;
+        private void OnDestroy()
+        {
+            StaticActionProvider.recalculateChainReaction -= RecalculateChain;
+            StaticActionProvider.triggerExplosion -= Explode;
+        }
 
         [ContextMenu("Explode")]
         private void Explode()
