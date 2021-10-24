@@ -444,6 +444,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: LevelComplete
       objectReference: {fileID: 0}
+    - target: {fileID: 2390315504495350559, guid: 6e6792c9bafbc5f438c5938282698332, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8440519172105465563, guid: 6e6792c9bafbc5f438c5938282698332, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6e6792c9bafbc5f438c5938282698332, type: 3}
 --- !u!1001 &3961809851168279849
