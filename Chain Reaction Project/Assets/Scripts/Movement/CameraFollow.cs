@@ -13,6 +13,8 @@ public class CameraFollow : MonoBehaviour
 
     [SerializeField]
     private Vector3 offset;
+    [SerializeField]
+    private float _endCameraMoveSpeed;
 
     private bool _followingPlayer = true;
     private bool _hasReachedTopViewPoint = false;
@@ -42,7 +44,7 @@ public class CameraFollow : MonoBehaviour
         {
             if (!_hasReachedTopViewPoint)
             {
-
+                transform.position = Vector3.Lerp(transform.position, MapTopViewPoint.position, Time.deltaTime * _endCameraMoveSpeed);
                 _hasReachedTopViewPoint = Vector3.SqrMagnitude(transform.position - MapTopViewPoint.position) < 0.5f;
 
                 if (_hasReachedTopViewPoint)
