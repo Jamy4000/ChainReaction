@@ -58,7 +58,7 @@ public abstract class AddListenerButton : MonoBehaviour, IPointerEnterHandler, I
 
         Sequence downAnimation = DOTween.Sequence()
              .Append(button.transform.DOScale(.98f, .1f).SetEase(Ease.InOutSine))
-            //.Join(button.targetGraphic.DOColor(colors.colorBlock.pressedColor, .1f).SetEase(Ease.InOutSine));
+            //.Join(button.targetGraphic.DOColor(colors.colorBlock.pressedColor, .1f).SetEase(Ease.InOutSine))
             ;
     }
 

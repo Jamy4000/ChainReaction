@@ -12,7 +12,7 @@ public class BombRandomizer : MonoBehaviour
     [SerializeField]
     private List<ConveyorBelt> conveyors;
 
-    public List<Holdable> BombList = new List<Holdable>();
+    //public List<Holdable> BombList = new List<Holdable>();
 
 
     private bool _toDrop;   // Change functionality to be true after every pick
@@ -40,7 +40,7 @@ public class BombRandomizer : MonoBehaviour
         StaticActionProvider.explosivesPlaced?.Invoke();
 
         // TODO: connect this to the remote bomb
-        BombList.Add(newBomb);
+        //BombList.Add(newBomb);
 
         newBomb.Held += OnBombPick;
         conveyors[chosenConveyor].AddItemForBelt(newBomb);

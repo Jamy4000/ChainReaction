@@ -9,7 +9,7 @@ namespace ChainReaction
     {
         ExplosionForce explosionForce;
 
-        public List<ExplosionForce> allExplosives = new List<ExplosionForce>();
+        //public List<ExplosionForce> allExplosives = new List<ExplosionForce>();
         public List<ExplosionForce> chainedExplosives = new List<ExplosionForce>();
 
         [SerializeField, ColorUsageAttribute(true, true)] private Color chainedColor;
@@ -46,7 +46,7 @@ namespace ChainReaction
         {
             chainedExplosives.Add(candidate);
 
-            List<ExplosionForce> newOrigins = CalculateNewCandidates(candidate, allExplosives);
+            List<ExplosionForce> newOrigins = CalculateNewCandidates(candidate, ExplosivesCollector.collection);// allExplosives);
 
             foreach (var newCandidate in newOrigins)
                 CalculateChain(newCandidate);
@@ -76,7 +76,7 @@ namespace ChainReaction
                 item.explosionRangeShader.GetComponent<MeshRenderer>().material.SetColor("WarningSignsColor_", chainedWarningColor);
             }
 
-            foreach (var item in allExplosives.Where(x => !chainedExplosives.Contains(x)))
+            foreach (var item in ExplosivesCollector.collection.Where(x => !chainedExplosives.Contains(x)))
             {
                 item.explosionRangeShader.GetComponent<MeshRenderer>().material.SetColor("Color_", unchainedColor);
                 item.explosionRangeShader.GetComponent<MeshRenderer>().material.SetColor("WarningSignsColor_", unchainedWarningColor);
