@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace ChainReaction
 {
@@ -8,7 +9,7 @@ namespace ChainReaction
     {
         ExplosionForce explosionForce;
 
-        public List<ExplosionForce> allExplosives = new List<ExplosionForce>();
+        //public List<ExplosionForce> allExplosives = new List<ExplosionForce>();
         public List<ExplosionForce> chainedExplosives = new List<ExplosionForce>();
 
         [SerializeField, ColorUsageAttribute(true, true)] private Color chainedColor;
@@ -20,11 +21,17 @@ namespace ChainReaction
         {
             explosionForce = GetComponent<ExplosionForce>();
             StaticActionProvider.recalculateChainReaction += RecalculateChain;
+            StaticActionProvider.triggerExplosion += Explode;
+
 
             RecalculateChain();
         }
 
-        private void OnDestroy() => StaticActionProvider.recalculateChainReaction -= RecalculateChain;
+        private void OnDestroy()
+        {
+            StaticActionProvider.recalculateChainReaction -= RecalculateChain;
+            StaticActionProvider.triggerExplosion -= Explode;
+        }
 
         [ContextMenu("Explode")]
         private void Explode()
@@ -39,7 +46,7 @@ namespace ChainReaction
         {
             chainedExplosives.Add(candidate);
 
-            List<ExplosionForce> newOrigins = CalculateNewCandidates(candidate, allExplosives);
+            List<ExplosionForce> newOrigins = CalculateNewCandidates(candidate, ExplosivesCollector.collection);// allExplosives);
 
             foreach (var newCandidate in newOrigins)
                 CalculateChain(newCandidate);
@@ -63,16 +70,13 @@ namespace ChainReaction
             chainedExplosives.Clear();
             CalculateChain(explosionForce);
 
-            List<ExplosionForce> unchained = allExplosives;
-
             foreach (var item in chainedExplosives)
             {
-                unchained.Remove(item);
                 item.explosionRangeShader.GetComponent<MeshRenderer>().material.SetColor("Color_", chainedColor);
                 item.explosionRangeShader.GetComponent<MeshRenderer>().material.SetColor("WarningSignsColor_", chainedWarningColor);
             }
 
-            foreach (var item in unchained)
+            foreach (var item in ExplosivesCollector.collection.Where(x => !chainedExplosives.Contains(x)))
             {
                 item.explosionRangeShader.GetComponent<MeshRenderer>().material.SetColor("Color_", unchainedColor);
                 item.explosionRangeShader.GetComponent<MeshRenderer>().material.SetColor("WarningSignsColor_", unchainedWarningColor);

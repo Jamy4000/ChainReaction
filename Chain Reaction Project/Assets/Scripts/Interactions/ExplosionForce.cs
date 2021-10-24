@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace ChainReaction
 {
@@ -15,10 +12,6 @@ namespace ChainReaction
         [SerializeField] private Vector3 explosionOffset = new Vector3(0, 1, 0);
 
         [SerializeField] private GameObject explosionVFXPrefab;
-
-        private void Awake() => StaticActionProvider.triggerExplosion += Explode;
-
-        private void OnDestroy() => StaticActionProvider.triggerExplosion -= Explode;
 
         private void OnValidate()
         {
@@ -48,11 +41,6 @@ namespace ChainReaction
 
                     totalForce += force;
                 }
-
-                //if (hitCollider.TryGetComponent(out ExplosionForce explosion))
-                //{
-                //
-                //}
             }
 
             StaticActionProvider.destructionForce?.Invoke(totalForce);

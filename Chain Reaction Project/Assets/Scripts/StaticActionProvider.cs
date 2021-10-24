@@ -7,8 +7,8 @@ namespace ChainReaction
     /// </summary>
     public static class StaticActionProvider
     {
-        public static Action<int> setExplosivesCount;
-        public static Action<int> explosivesPlaced;
+        //public static Action<int> setExplosivesCount;
+        public static Action explosivesPlaced;
 
         public static Action<float> destructionForce;
 
