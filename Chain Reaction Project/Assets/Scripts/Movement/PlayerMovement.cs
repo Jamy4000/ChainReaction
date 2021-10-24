@@ -31,9 +31,23 @@ public class PlayerMovement : MonoBehaviour
     private float X;
     private float Z;
     // Start is called before the first frame update
-    private void Start()
+    void Start()
+    {
+        // Destroy(this.gameObject.GetComponent(typeof(Rigidbody)) as Rigidbody);
+        SignalBus.GameOver.Listen(CancelMovment);
+    }
+
+    void CancelMovment()
     {
 
+        this.enabled = false;
+        SignalBus.GameOver.StopListening(CancelMovment);
+    }
+
+    private void OnDestroy()
+    {
+        //SignalBus.GameOver.Reset();
+        SignalBus.GameOver.StopListening(CancelMovment);
     }
 
     // Update is called once per frame
