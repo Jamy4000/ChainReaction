@@ -8,8 +8,15 @@ public class GameEnderRigidfier : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Destroy(this.gameObject.GetComponent(typeof(Rigidbody)) as Rigidbody);
+        Rigidbody tmp = this.gameObject.AddComponent(typeof(Rigidbody)) as Rigidbody;
+        StartCoroutine(DestroyDelay());
         StaticActionProvider.triggerExplosion += BecomeRigid;
+    }
+
+    private IEnumerator DestroyDelay()
+    {
+        yield return new WaitForSeconds(1);
+        Destroy(this.gameObject.GetComponent(typeof(Rigidbody)) as Rigidbody);
     }
 
     void BecomeRigid()
