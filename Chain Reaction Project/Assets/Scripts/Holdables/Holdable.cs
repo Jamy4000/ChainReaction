@@ -3,6 +3,12 @@ using UnityEngine;
 
 namespace Holdables
 {
+    public enum HoldableType
+    {
+        Explosive,
+        Crate
+    }
+
     public delegate void HoldObject(Holdable holdable);
     public delegate void DropObject(Holdable holdable);
     public class Holdable : MonoBehaviour
@@ -10,6 +16,7 @@ namespace Holdables
         public bool IsPutDown { get; private set; } = true;
         public event HoldObject Held;
         public event DropObject Dropped;
+        public HoldableType Type = HoldableType.Crate;
 
         public void HoldObject()
         {

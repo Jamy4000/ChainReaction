@@ -26,7 +26,9 @@ public abstract class AddListenerButton : MonoBehaviour, IPointerEnterHandler, I
 
     protected void OnValidate()
     {
-        GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
+        TextMeshProUGUI tmpUgui = GetComponentInChildren<TextMeshProUGUI>();
+        if (tmpUgui)
+            tmpUgui.text = buttonText;
 
         Awake();
         button.colors = colors.colorBlock;
