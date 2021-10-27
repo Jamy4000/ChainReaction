@@ -36,7 +36,8 @@ public class BombRandomizer : MonoBehaviour
     private void DropBomb()
     {
         int chosenConveyor = Random.Range(0, conveyors.Count);
-        Holdable newBomb = Instantiate(bombType[Random.Range(0, bombType.Count)]);
+        int bombtype = Random.Range(0, 50);
+        Holdable newBomb = Instantiate(bombtype <= 20 ? bombType[0]:bombType[Random.Range(1,bombType.Count)]) ;
         StaticActionProvider.explosivesPlaced?.Invoke();
 
         // TODO: connect this to the remote bomb
