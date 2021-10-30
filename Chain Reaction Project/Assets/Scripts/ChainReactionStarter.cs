@@ -74,6 +74,7 @@ namespace ChainReaction
             {
                 item.explosionRangeShader.GetComponent<MeshRenderer>().material.SetColor("Color_", chainedColor);
                 item.explosionRangeShader.GetComponent<MeshRenderer>().material.SetColor("WarningSignsColor_", chainedWarningColor);
+
             }
 
             foreach (var item in ExplosivesCollector.collection.Where(x => !chainedExplosives.Contains(x)))
