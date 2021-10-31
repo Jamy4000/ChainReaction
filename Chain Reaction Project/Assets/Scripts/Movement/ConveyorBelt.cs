@@ -26,7 +26,18 @@ public class ConveyorBelt : MonoBehaviour
     private bool _atEndPoint = false;
 
     private Holdable _item;
-    private float _soundWaitingTime = 0.3f; 
+    private float _soundWaitingTime = 0.3f;
+
+    private void Start()
+    {
+        SignalBus.GameOver.Listen(StopUpdating);
+    }
+
+    private void OnDestroy()
+    {
+        SignalBus.GameOver.StopListening(StopUpdating);
+    }
+
     public void AddItemForBelt(Holdable Item)
     {
         _item = Item;
@@ -89,5 +100,11 @@ public class ConveyorBelt : MonoBehaviour
 
             }
         }
+    }
+
+
+    private void StopUpdating()
+    {
+        this.enabled = false;
     }
 }

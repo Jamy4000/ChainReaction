@@ -11,6 +11,7 @@ namespace ChainReaction
     {
         ExplosionForce _explosionForce;
 
+        private int _chainedExplosionCount;
         private List<ExplosionForce> _chainedExplosives = new List<ExplosionForce>();
         private List<ExplosionForce> _outOfRangeExplosives = new List<ExplosionForce>();
 
@@ -64,7 +65,8 @@ namespace ChainReaction
             }
 
             StartCoroutine(ExecuteAfterTime(0.5f, candidate, newOrigins));
-            
+
+
             List<ExplosionForce> CalculateNewCandidates(ExplosionForce origin, List<ExplosionForce> candidates)
             {
                 List<ExplosionForce> candidatesWithinRange = new List<ExplosionForce>();
@@ -90,11 +92,15 @@ namespace ChainReaction
         IEnumerator ExecuteAfterTime(float time, ExplosionForce item, List<ExplosionForce> newOrigins)
         {
             yield return new WaitForSeconds(time);
+
             foreach (var newCandidate in newOrigins)
             {
                 ExploseThisBomb(newCandidate);
             }
             item.Explode();
+            _chainedExplosionCount--;
+            if (_chainedExplosionCount == 0)
+                StaticActionProvider.AllExplosionsDone?.Invoke();
             // Code to execute after the delay
         }
 
@@ -139,6 +145,7 @@ namespace ChainReaction
             _outOfRangeExplosives.AddRange(ExplosivesCollector.collection);
 
             CalculateChain(_explosionForce, _chainedExplosives, _outOfRangeExplosives);
+            _chainedExplosionCount = _chainedExplosives.Count;
 
             foreach (ExplosionForce item in _chainedExplosives)
             {

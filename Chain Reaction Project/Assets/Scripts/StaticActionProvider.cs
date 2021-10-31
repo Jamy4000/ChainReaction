@@ -12,7 +12,11 @@ namespace ChainReaction
 
         public static Action<float> DestructionForce;
 
+        public static Action<float> OnObjectDestroyed;
+
         public static Action TriggerExplosion;
+
+        public static Action AllExplosionsDone;
 
         public static Action UpdateForceText;
     }

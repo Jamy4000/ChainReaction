@@ -7,18 +7,21 @@ public class EndScreenDisplay : MonoBehaviour
     [SerializeField] private TextMeshProUGUI counterText;
     [SerializeField] private GameObject endScreen;
 
-    private float force = 0;
+    private float finalDamages = 0f;
 
     private void Awake()
     {
-        StaticActionProvider.TriggerExplosion += ShowEndScreen;
+        finalDamages = 0f;
+        StaticActionProvider.AllExplosionsDone += ShowEndScreen;
         StaticActionProvider.DestructionForce += UpdateCounter;
+        StaticActionProvider.OnObjectDestroyed += UpdateCounter;
     }
 
     private void OnDestroy()
     {
-        StaticActionProvider.TriggerExplosion -= ShowEndScreen;
+        StaticActionProvider.AllExplosionsDone -= ShowEndScreen;
         StaticActionProvider.DestructionForce -= UpdateCounter;
+        StaticActionProvider.OnObjectDestroyed += UpdateCounter;
     }
 
     void ShowEndScreen()
@@ -27,14 +30,14 @@ public class EndScreenDisplay : MonoBehaviour
 
         System.Collections.IEnumerator ShowAfterDelay()
         {
-            yield return new WaitForSeconds(5.0f);
+            yield return new WaitForSeconds(2.0f);
             endScreen.SetActive(true);
         }
     }
 
-    void UpdateCounter(float addedForce)
+    void UpdateCounter(float addedDamages)
     {
-        force += (addedForce * 0.01f);
-        counterText.text = $"{force.ToString()} $";
+        finalDamages += (addedDamages * 0.01f);
+        counterText.text = $"{finalDamages.ToString()} $";
     }
 }

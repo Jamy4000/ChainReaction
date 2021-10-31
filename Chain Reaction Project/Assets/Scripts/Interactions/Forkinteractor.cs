@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Holdables;
+using System;
 
 public class Forkinteractor : MonoBehaviour
 {
@@ -10,8 +12,8 @@ public class Forkinteractor : MonoBehaviour
     [SerializeField]
     private AudioSource _itemDropSound;
 
-    private HashSet<Holdables.Holdable> _PickableNearFork = new HashSet<Holdables.Holdable>();
-    private Holdables.Holdable _helditem = null;
+    public HashSet<Holdables.Holdable> PickableNearFork = new HashSet<Holdables.Holdable>();
+    public Holdables.Holdable HeldItem { get; private set; } = null;
 
     [SerializeField]
     private Transform _ItemPositionOffset;
@@ -28,7 +30,7 @@ public class Forkinteractor : MonoBehaviour
             Holdables.Holdable holdable = other.GetComponent<Holdables.Holdable>();
             if (holdable) 
             { 
-                _PickableNearFork.Add(holdable);
+                PickableNearFork.Add(holdable);
             }
         }
 
@@ -43,9 +45,9 @@ public class Forkinteractor : MonoBehaviour
         if (other.CompareTag(TagsHolder.BOMB_TAG) || other.CompareTag(TagsHolder.CRATE_TAG))
         {
             Holdables.Holdable holdable = other.GetComponent<Holdables.Holdable>();
-            if (holdable && _PickableNearFork.Contains(holdable))
+            if (holdable && PickableNearFork.Contains(holdable))
             {
-                _PickableNearFork.Remove(holdable);
+                PickableNearFork.Remove(holdable);
             }
         }
     }
@@ -55,26 +57,26 @@ public class Forkinteractor : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             // Dropping down crate
-            if (_helditem != null)
+            if (HeldItem != null)
             {
-                _helditem.transform.SetParent(null);
-                _helditem.transform.position = _dropPositionOffset.position;
-                _helditem.GetComponent<Holdables.Holdable>().DropObject();
+                HeldItem.transform.SetParent(null);
+                HeldItem.transform.position = _dropPositionOffset.position;
+                HeldItem.GetComponent<Holdables.Holdable>().DropObject();
 
-                _helditem = null;
+                HeldItem = null;
 
                 _itemDropSound.Play();
             }
             else
             {
                 // Picking up crate
-                if (_PickableNearFork.Count > 0)
+                if (PickableNearFork.Count > 0)
                 {
-                    Holdables.Holdable closestCrate = _PickableNearFork.First();
+                    Holdables.Holdable closestCrate = PickableNearFork.First();
                     Vector3 crateToPlayer = closestCrate.transform.position - transform.position;
                     float bestHorizontalSqDist = crateToPlayer.x * crateToPlayer.x + crateToPlayer.z * crateToPlayer.z;
 
-                    foreach (Holdables.Holdable crate in _PickableNearFork)
+                    foreach (Holdables.Holdable crate in PickableNearFork)
                     {
                         // Give priority to explosives
                         if (closestCrate.Type == Holdables.HoldableType.Explosive &&
@@ -90,17 +92,27 @@ public class Forkinteractor : MonoBehaviour
                         }
                     };
 
-                    closestCrate.transform.SetParent(this.transform);
-                    closestCrate.transform.localPosition = _ItemPositionOffset.localPosition;
-                    closestCrate.transform.localRotation = Quaternion.identity;
-                    _helditem = closestCrate;
-                    _helditem.HoldObject();
-
-                    _itemPickupSound.Play();
+                    PickObject(closestCrate);
                 }
             }
         }
     }
 
+    public void PickObject(Holdable closestCrate)
+    {
+        if (!closestCrate.IsPutDown)
+            closestCrate.DropObject();
 
+        if (!closestCrate.IsOnFloor)
+            closestCrate.IsOnFloor = true;
+
+        closestCrate.transform.SetParent(this.transform);
+        closestCrate.transform.localPosition = _ItemPositionOffset.localPosition;
+        closestCrate.transform.localRotation = Quaternion.identity;
+        HeldItem = closestCrate;
+
+        HeldItem.HoldObject();
+
+        _itemPickupSound.Play();
+    }
 }

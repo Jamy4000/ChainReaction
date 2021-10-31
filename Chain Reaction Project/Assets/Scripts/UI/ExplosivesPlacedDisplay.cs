@@ -10,19 +10,17 @@ namespace ChainReaction.UI
         //[SerializeField] private TextMeshProUGUI maxCounter;
 
         //private int max = 10;
-        private int current = 0;
+        private float current = 0;
 
         private void Awake()
         {
-            StaticActionProvider.ExplosivesPlaced += UpdateText;
+            StaticActionProvider.OnObjectDestroyed += UpdateText;
             //StaticActionProvider.setExplosivesCount += SetExplosivesCount;
         }
 
-        private void OnEnable() => UpdateText();
-
         private void OnDestroy()
         {
-            StaticActionProvider.ExplosivesPlaced -= UpdateText;
+            StaticActionProvider.OnObjectDestroyed -= UpdateText;
             //StaticActionProvider.setExplosivesCount -= SetExplosivesCount;
         }
 
@@ -32,6 +30,9 @@ namespace ChainReaction.UI
         //    maxCounter.text = $"/{max}";
         //}
 
-        private void UpdateText() => currentCounter.text = (current + 1).ToString(); //currentCounter..DOCounter(current, newValue, .2f); // why is DOTween not working??
+        private void UpdateText(float priceToAdd)
+        {
+            currentCounter.text = $"{(current + priceToAdd).ToString()} $";
+        }
     }
 }

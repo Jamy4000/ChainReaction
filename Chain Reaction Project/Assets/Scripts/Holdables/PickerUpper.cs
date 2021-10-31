@@ -1,4 +1,5 @@
 ﻿using ChainReaction;
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -22,6 +23,13 @@ namespace Holdables
 
             holdable.HoldObject();
             CurrentHoldable = holdable;
+            // This is for when the user take the object from the Drone for example
+            CurrentHoldable.Dropped += DropCurrentHoldable;
+        }
+
+        private void DropCurrentHoldable(Holdable holdable)
+        {
+            PutHoldableDown();
         }
 
         internal void PutHoldableDown()
@@ -34,8 +42,8 @@ namespace Holdables
             trans.SetParent(null);
             trans.position = PutDownPosition;
 
+            CurrentHoldable.Dropped -= DropCurrentHoldable;
             CurrentHoldable.DropObject();
-
             CurrentHoldable = null;
         }
 

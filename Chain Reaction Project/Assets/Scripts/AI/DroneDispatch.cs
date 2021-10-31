@@ -97,7 +97,7 @@ namespace AI
             drone.transform.position = GetRandomSpawnPoint();
 
             Drone.Assignment assignment;
-            bool shouldFetchExplosives = Random.value > _fetchExplosivesProbability;
+            bool shouldFetchExplosives = Random.value <= _fetchExplosivesProbability;
             List<Holdable> availableItems = shouldFetchExplosives ?
                 AvailableExplosives.ToList() : AvailableCrates.ToList();
 

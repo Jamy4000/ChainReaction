@@ -14,6 +14,11 @@ namespace Holdables
     public class Holdable : MonoBehaviour
     {
         public bool IsPutDown { get; private set; } = true;
+        
+        public bool IsOnFloor = false;
+        [field: SerializeField]
+        public float Price { get; private set; } = 10.0f;
+
         public event HoldObject Held;
         public event DropObject Dropped;
         public HoldableType Type = HoldableType.Crate;
