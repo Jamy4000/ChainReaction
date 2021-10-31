@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System.Collections;
 
 namespace ChainReaction
 {
@@ -33,15 +34,48 @@ namespace ChainReaction
             StaticActionProvider.TriggerExplosion -= Explode;
         }
 
+        IEnumerator ExecuteAfterTime(float time,ExplosionForce item, List<ExplosionForce> newOrigins)
+        {
+            yield return new WaitForSeconds(time);
+            foreach (var newCandidate in newOrigins)
+            {
+                myExplode(newCandidate);
+            }
+            item.Explode();
+            // Code to execute after the delay
+        }
         [ContextMenu("Explode")]
         private void Explode()
         {
-            RecalculateChain();
-
-            foreach (var item in chainedExplosives)
-                item.Explode();
+            chainedExplosives.Clear();
+            //RecalculateChain();
+            myExplode(explosionForce);
+            //foreach (var item in chainedExplosives)
+              //  item.Explode();
         }
+        
+        private void myExplode(ExplosionForce candidate)
+        {
+            
+            List<ExplosionForce> newOrigins = CalculateNewCandidates(candidate, ExplosivesCollector.collection);// allExplosives);
+            StartCoroutine(ExecuteAfterTime(0.5f, candidate, newOrigins));
+            
+            List<ExplosionForce> CalculateNewCandidates(ExplosionForce origin, List<ExplosionForce> candidates)
+            {
+                List<ExplosionForce> candidatesWithinRange = new List<ExplosionForce>();
 
+                foreach (var explosive in candidates) { 
+                    if (!chainedExplosives.Contains(explosive))
+                    {
+                        if ((explosive.transform.position - origin.transform.position).magnitude < origin.explosionRadius)
+                        {
+                            candidatesWithinRange.Add(explosive);
+                        }
+                    }
+                }
+                return candidatesWithinRange;
+            }
+        }
         private void CalculateChain(ExplosionForce candidate)
         {
             chainedExplosives.Add(candidate);
