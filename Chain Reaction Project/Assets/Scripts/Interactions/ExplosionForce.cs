@@ -7,7 +7,7 @@ namespace ChainReaction
         [SerializeField] private GameObject model;
         public GameObject explosionRangeShader;
 
-        [Range(.1f, 10f)] public float explosionRadius = 1f;
+        [Range(.1f, 20f)] public float explosionRadius = 1f;
         [SerializeField, Range(.1f, 10f)] private float explosionForce = 2f;
         [SerializeField] private Vector3 explosionOffset = new Vector3(0, 1, 0);
 
@@ -16,7 +16,7 @@ namespace ChainReaction
 
         private void OnValidate()
         {
-            explosionRangeShader.transform.localScale = Vector3.one * explosionRadius * 2;
+            explosionRangeShader.transform.localScale = Vector3.one * explosionRadius ;
         }
 
         [ContextMenu("Explode")]
@@ -30,9 +30,9 @@ namespace ChainReaction
             {
                 if (hitCollider.TryGetComponent(out Rigidbody rigidbody))
                 {
-                    Vector3 distance = transform.position - hitCollider.transform.position;
+                    Vector3 distance = hitCollider.transform.position - transform.position ;
 
-                    float forceMultiplier = Mathf.Abs(explosionRadius - distance.magnitude) * 100f;
+                    float forceMultiplier =  Mathf.Abs(explosionRadius - distance.magnitude ) *100f ;
 
                     Vector3 direction = distance.normalized;
 
