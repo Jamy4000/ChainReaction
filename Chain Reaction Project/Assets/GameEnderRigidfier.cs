@@ -8,9 +8,9 @@ public class GameEnderRigidfier : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Rigidbody tmp = this.gameObject.AddComponent(typeof(Rigidbody)) as Rigidbody;
-        StartCoroutine(DestroyDelay());
-        StaticActionProvider.triggerExplosion += BecomeRigid;
+        //Rigidbody tmp = this.gameObject.AddComponent(typeof(Rigidbody)) as Rigidbody;
+        //StartCoroutine(DestroyDelay());
+        SignalBus.GameOver.Listen(BecomeRigid);
     }
 
     private IEnumerator DestroyDelay()
@@ -22,13 +22,14 @@ public class GameEnderRigidfier : MonoBehaviour
     void BecomeRigid()
     {
         
-        Rigidbody tmp = this.gameObject.AddComponent(typeof(Rigidbody)) as Rigidbody;
-        StaticActionProvider.triggerExplosion -= BecomeRigid;
+        Rigidbody tmp = this.gameObject.GetComponent<Rigidbody>();
+        tmp.isKinematic = false;
+        SignalBus.GameOver.StopListening(BecomeRigid);
     }
 
     private void OnDestroy()
     {
         //SignalBus.GameOver.Reset();
-        StaticActionProvider.triggerExplosion -= BecomeRigid;
+        SignalBus.GameOver.StopListening(BecomeRigid);
     }
 }

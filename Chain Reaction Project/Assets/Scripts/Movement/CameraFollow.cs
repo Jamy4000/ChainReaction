@@ -48,7 +48,7 @@ public class CameraFollow : MonoBehaviour
                 _hasReachedTopViewPoint = Vector3.SqrMagnitude(transform.position - MapTopViewPoint.position) < 0.5f;
 
                 if (_hasReachedTopViewPoint)
-                    StaticActionProvider.triggerExplosion.Invoke();
+                    StaticActionProvider.TriggerExplosion.Invoke();
             }
         }
     }

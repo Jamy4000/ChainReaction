@@ -7,6 +7,9 @@ public class ActivateBomb : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        SignalBus.GameOver.Raise();
+        if(other.gameObject.CompareTag("Player"))
+        {
+            SignalBus.GameOver.Raise();
+        }
     }
 }

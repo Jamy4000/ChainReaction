@@ -34,18 +34,40 @@ namespace AI
         [SerializeField, Range(0, 100)]
         private float spawnCooldownTime = 3f;
 
+        [SerializeField, Range(0.0f, 1.0f)]
+        private float _fetchExplosivesProbability = 0.2f;
+
         private float timeSinceLevelStart;
 
-        private IEnumerable<Holdable> AvailableHoldables =>
-            HoldableCollector.collection.Where(holdable => holdable.IsPutDown);
-        
-        private void Start() => StartCoroutine(SpawnRoutine());
+        private Coroutine _spawnCoroutine;
+
+        private IEnumerable<Holdable> AvailableCrates =>
+            HoldableCollector.collection.Where(holdable => holdable.IsPutDown && holdable.Type == HoldableType.Crate);
+        private IEnumerable<Holdable> AvailableExplosives =>
+            HoldableCollector.collection.Where(holdable => holdable.IsPutDown && holdable.Type == HoldableType.Explosive);
+
+        private void Start()
+        {
+            _spawnCoroutine = StartCoroutine(SpawnRoutine());
+            SignalBus.GameOver.Listen(StopSpawning);
+        }
 
         private void Update() => timeSinceLevelStart += Time.deltaTime;
 
+        private void OnDestroy()
+        {
+            StopCoroutine(_spawnCoroutine);
+            SignalBus.GameOver.StopListening(StopSpawning);
+        }
+
+        private void StopSpawning()
+        {
+            StopCoroutine(_spawnCoroutine);
+        }
+
         private IEnumerator SpawnRoutine()
         {
-            while (Application.isPlaying)
+            while (true)
             {
                 if (NeedMoreDrones())
                     SpawnDrone();
@@ -75,14 +97,18 @@ namespace AI
             drone.transform.position = GetRandomSpawnPoint();
 
             Drone.Assignment assignment;
+            bool shouldFetchExplosives = Random.value > _fetchExplosivesProbability;
+            List<Holdable> availableItems = shouldFetchExplosives ?
+                AvailableExplosives.ToList() : AvailableCrates.ToList();
 
-            if (AvailableHoldables.Count() == 0 || Random.value < .5)
+            if (!shouldFetchExplosives && (availableItems.Count == 0 || Random.value < 0.4f))
+            {
                 assignment =
-                    new Drone.BringCrateAssignment(dropOffPoints[Random.Range(0, dropOffPoints.Count)].position);
+                    new Drone.BringCrateAssignment(dropOffPoints[Random.Range(0, dropOffPoints.Count - 1)].position);
+            }
             else
             {
-                List<Holdable> available = AvailableHoldables.ToList();
-                assignment = new Drone.RetrieveCrateAssignment(available[Random.Range(0, available.Count)]);
+                assignment = new Drone.RetrieveCrateAssignment(availableItems[Random.Range(0, availableItems.Count - 1)]);
             }
 
             drone.GiveAssignment(assignment);
@@ -93,7 +119,7 @@ namespace AI
             if (spawnPoints.Count == 0)
                 return Vector3.zero;
 
-            return spawnPoints[Random.Range(0, spawnPoints.Capacity)].position;
+            return spawnPoints[Random.Range(0, spawnPoints.Count - 1)].position;
         }
     }
 }

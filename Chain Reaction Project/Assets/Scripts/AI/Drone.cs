@@ -33,14 +33,41 @@ namespace AI
 
         private void Start()
         {
+            SignalBus.GameOver.Listen(StopMoving);
             moveSource.Play();
             sfxSource.PlayOneShot(spawnSound);
+            if (assignment is RetrieveCrateAssignment retrieveCrateAssignment)
+                retrieveCrateAssignment.Holdable.Held += CancelAssignment;
+        }
+
+        private void CancelAssignment(Holdable holdable)
+        {
+            if (assignment is RetrieveCrateAssignment retrieveCrateAssignment)
+            {
+                if (pickerUpper.CurrentHoldable != holdable)
+                {
+                    retrieveCrateAssignment.Holdable.Held -= CancelAssignment;
+                    assignment.CancelAssignment(this);
+                }
+            }
         }
 
         private void Update()
         {
             if (IsTargetClose())
                 assignment.Finish(this);
+        }
+
+        private void OnDestroy()
+        {
+            SignalBus.GameOver.StopListening(StopMoving);
+            if (assignment is RetrieveCrateAssignment retrieveCrateAssignment && retrieveCrateAssignment.Holdable != null)
+                retrieveCrateAssignment.Holdable.Held -= CancelAssignment;
+        }
+
+        private void StopMoving()
+        {
+            this.enabled = false;
         }
 
         public void RefreshInitialState()
@@ -89,21 +116,31 @@ namespace AI
         {
             public abstract Vector3 Target { get; }
             public abstract void    Finish(Drone drone);
+            public abstract void    CancelAssignment(Drone drone);
         }
 
         public class RetrieveCrateAssignment : Assignment
         {
-            public Holdable holdable;
-            public RetrieveCrateAssignment(Holdable holdable) { this.holdable = holdable; }
+            public Holdable Holdable;
+            public Vector3 HoldablePosition;
+            public RetrieveCrateAssignment(Holdable holdable) 
+            {
+                this.Holdable = holdable;
+                Target = holdable.transform.position;
+            }
 
-            public override Vector3 Target =>
-                holdable != null && holdable.IsPutDown ? holdable.transform.position : Vector3.zero;
+            public override Vector3 Target { get; }
+
+            public override void CancelAssignment(Drone drone)
+            {
+                drone.GoHome();
+            }
 
             public override void Finish(Drone drone)
             {
-                if (holdable != null && holdable.IsPutDown)
+                if (Holdable != null && Holdable.IsPutDown)
                 {
-                    drone.pickerUpper.PickHoldableUp(holdable);
+                    drone.pickerUpper.PickHoldableUp(Holdable);
                     drone.PlayPickUpSound();
                 }
 
@@ -115,6 +152,12 @@ namespace AI
         {
             public BringCrateAssignment(Vector3 position) { Target = position; }
             public override Vector3 Target { get; }
+
+            public override void CancelAssignment(Drone drone)
+            {
+                drone.pickerUpper.PutHoldableDown();
+                drone.GoHome();
+            }
 
             public override void Finish(Drone drone)
             {
@@ -128,6 +171,13 @@ namespace AI
         {
             public GoHomeAssignment(Vector3 position) { Target = position; }
             public override Vector3 Target { get; }
+
+            public override void CancelAssignment(Drone drone)
+            {
+                GameObject o = drone.gameObject;
+                o.SetActive(false);
+                Destroy(o);
+            }
 
             public override void Finish(Drone drone)
             {

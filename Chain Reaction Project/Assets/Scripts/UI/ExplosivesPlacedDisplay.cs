@@ -14,7 +14,7 @@ namespace ChainReaction.UI
 
         private void Awake()
         {
-            StaticActionProvider.explosivesPlaced += UpdateText;
+            StaticActionProvider.ExplosivesPlaced += UpdateText;
             //StaticActionProvider.setExplosivesCount += SetExplosivesCount;
         }
 
@@ -22,7 +22,7 @@ namespace ChainReaction.UI
 
         private void OnDestroy()
         {
-            StaticActionProvider.explosivesPlaced -= UpdateText;
+            StaticActionProvider.ExplosivesPlaced -= UpdateText;
             //StaticActionProvider.setExplosivesCount -= SetExplosivesCount;
         }
 

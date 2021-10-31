@@ -588,15 +588,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8833420864670032989, guid: fd64ed15d174e2a4e8d55cb6aea7f3ca, type: 3}
       propertyPath: m_LocalScale.x
-      value: 12
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 8833420864670032989, guid: fd64ed15d174e2a4e8d55cb6aea7f3ca, type: 3}
       propertyPath: m_LocalScale.y
-      value: 12
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 8833420864670032989, guid: fd64ed15d174e2a4e8d55cb6aea7f3ca, type: 3}
       propertyPath: m_LocalScale.z
-      value: 12
+      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fd64ed15d174e2a4e8d55cb6aea7f3ca, type: 3}
@@ -614,15 +614,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5453455588552412425, guid: bde2f063aecc3694aa3c045113059837, type: 3}
       propertyPath: m_LocalScale.x
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5453455588552412425, guid: bde2f063aecc3694aa3c045113059837, type: 3}
       propertyPath: m_LocalScale.y
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5453455588552412425, guid: bde2f063aecc3694aa3c045113059837, type: 3}
       propertyPath: m_LocalScale.z
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6798182902393752196, guid: bde2f063aecc3694aa3c045113059837, type: 3}
       propertyPath: m_RootOrder
@@ -1170,6 +1170,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1714147781964331903, guid: e3f589a9b219d054b91e1ff0d76e3067, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1714147781964331903, guid: e3f589a9b219d054b91e1ff0d76e3067, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1714147781964331903, guid: e3f589a9b219d054b91e1ff0d76e3067, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e3f589a9b219d054b91e1ff0d76e3067, type: 3}
 --- !u!4 &1389441131 stripped
@@ -1576,6 +1588,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 498577262}
     m_Modifications:
+    - target: {fileID: 2495961539539933940, guid: 5a96079bf660b814d94168b18f3f5df5, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2495961539539933940, guid: 5a96079bf660b814d94168b18f3f5df5, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2495961539539933940, guid: 5a96079bf660b814d94168b18f3f5df5, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 3988500874384760185, guid: 5a96079bf660b814d94168b18f3f5df5, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -1640,19 +1664,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5205072050220308288, guid: 60af3945f10640e42ac58c2ff98d182b, type: 3}
       propertyPath: m_LocalScale.x
-      value: 9
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 5205072050220308288, guid: 60af3945f10640e42ac58c2ff98d182b, type: 3}
       propertyPath: m_LocalScale.y
-      value: 9
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 5205072050220308288, guid: 60af3945f10640e42ac58c2ff98d182b, type: 3}
       propertyPath: m_LocalScale.z
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 6756893478496194764, guid: 60af3945f10640e42ac58c2ff98d182b, type: 3}
-      propertyPath: explosionForce
-      value: 3.5
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 6756893478496194764, guid: 60af3945f10640e42ac58c2ff98d182b, type: 3}
       propertyPath: explosionRadius

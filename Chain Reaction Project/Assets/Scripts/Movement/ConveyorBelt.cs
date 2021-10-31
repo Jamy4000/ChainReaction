@@ -30,16 +30,18 @@ public class ConveyorBelt : MonoBehaviour
     public void AddItemForBelt(Holdable Item)
     {
         _item = Item;
-        _item.Held += pickup;
+        _item.transform.SetParent(this.transform);
+        _item.Held += Pickup;
         _item.transform.position = _startPosition.position;
         _spawnSound.Play();
     }
 
-    private void pickup(Holdable holdable)
+    private void Pickup(Holdable holdable)
     {
-        _item.Held -= pickup;
+        _item.Held -= Pickup;
         _item = null;
 
+     //   _atEndPoint = false;
     }
 
     // Update is called once per frame
@@ -79,11 +81,12 @@ public class ConveyorBelt : MonoBehaviour
                 }
                 else
                 {
-                    _item.Held -= pickup;
+                    _item.Held -= Pickup;
                     _item = null;
-
                     _dropOffSound.Play();
                 }
+
+
             }
         }
     }

@@ -21,7 +21,6 @@ namespace Holdables
         public void HoldObject()
         {
             IsPutDown = false;
-            StaticActionProvider.recalculateChainReaction?.Invoke();
             OnObjectHold();
 
         }
@@ -33,7 +32,6 @@ namespace Holdables
 
         public void DropObject()
         {
-            StaticActionProvider.recalculateChainReaction?.Invoke();
             IsPutDown = true;
             OnObjectDropped();
         }
