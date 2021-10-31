@@ -23,11 +23,13 @@ public class BombRandomizer : MonoBehaviour
     {
         _conveyor = GetComponent<ConveyorBelt>();
     }
+
     // Start is called before the first frame update
     void Start()
     {
         _toDrop = true;
         _timeBeforeDrop = Random.Range(1f, 7f);
+        SignalBus.GameOver.Listen(StopUpdating);
     }
 
     // Update is called once per frame
@@ -46,6 +48,16 @@ public class BombRandomizer : MonoBehaviour
                 _timeBeforeDrop -= Time.deltaTime;
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        SignalBus.GameOver.StopListening(StopUpdating);
+    }
+
+    private void StopUpdating()
+    {
+        this.enabled = false;
     }
 
     private void DropBomb()

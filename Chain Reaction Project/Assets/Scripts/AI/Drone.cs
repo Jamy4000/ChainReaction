@@ -31,6 +31,8 @@ namespace AI
 
         public Assignment assignment;
 
+        public static float Price = 200f;
+
         private void Start()
         {
             SignalBus.GameOver.Listen(StopMoving);

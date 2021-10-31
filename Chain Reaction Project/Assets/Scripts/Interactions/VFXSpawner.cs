@@ -18,7 +18,10 @@ namespace ChainReaction
         {
             yield return new WaitForSeconds(delay);
 
-            Instantiate(smokeVFXPrefab, transform.position, Quaternion.identity);
+            if (smokeVFXPrefab)
+                Instantiate(smokeVFXPrefab, transform.position, Quaternion.identity);
+            
+            Destroy(gameObject);
         }
     }
 }
