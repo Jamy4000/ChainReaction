@@ -6,7 +6,7 @@ namespace Holdables
 {
     public class PickerUpper : MonoBehaviour
     {
-        private Holdable currentHoldable;
+        public Holdable CurrentHoldable { get; private set; }
 
         protected virtual Vector3 PutDownPosition => transform.position + Vector3.forward * 2;
 
@@ -21,33 +21,35 @@ namespace Holdables
             trans.localPosition = Vector3.zero;
 
             holdable.HoldObject();
-            currentHoldable = holdable;
+            CurrentHoldable = holdable;
             
-            StaticActionProvider.recalculateChainReaction?.Invoke();
+            StaticActionProvider.RecalculateChainReaction?.Invoke();
         }
 
         internal void PutHoldableDown()
         {
-            if (currentHoldable == null)
+            if (CurrentHoldable == null)
                 return;
 
-            Transform trans = currentHoldable.transform;
+            Transform trans = CurrentHoldable.transform;
 
             trans.SetParent(null);
             trans.position = PutDownPosition;
 
-            currentHoldable.DropObject();
-            currentHoldable = null;
-            
-            StaticActionProvider.recalculateChainReaction?.Invoke();
+            CurrentHoldable.DropObject();
+
+            if (CurrentHoldable.Type == HoldableType.Explosive)
+                StaticActionProvider.RecalculateChainReaction?.Invoke();
+
+            CurrentHoldable = null;
         }
 
         internal void KillHoldable()
         {
-            if (null != currentHoldable)
+            if (null != CurrentHoldable)
             {
-                Destroy(currentHoldable);
-                currentHoldable = null;
+                Destroy(CurrentHoldable);
+                CurrentHoldable = null;
             }
         }
     }

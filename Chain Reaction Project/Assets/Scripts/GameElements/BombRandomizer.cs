@@ -52,7 +52,7 @@ public class BombRandomizer : MonoBehaviour
     {
         int bombtype = Random.Range(0, 50);
         Holdable newBomb = Instantiate(bombtype <= 20 ? bombType[0]:bombType[Random.Range(1,bombType.Count)]) ;
-        StaticActionProvider.explosivesPlaced?.Invoke();
+        StaticActionProvider.ExplosivesPlaced?.Invoke();
 
         // TODO: connect this to the remote bomb
         //BombList.Add(newBomb);

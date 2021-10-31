@@ -81,18 +81,17 @@ namespace AI
 
             Drone.Assignment assignment;
             bool shouldFetchExplosives = Random.value > _fetchExplosivesProbability;
-            IEnumerable<Holdable> availableItems = shouldFetchExplosives ?
-                AvailableExplosives : AvailableCrates;
+            List<Holdable> availableItems = shouldFetchExplosives ?
+                AvailableExplosives.ToList() : AvailableCrates.ToList();
 
-            if (!shouldFetchExplosives && (availableItems.Count() == 0 || Random.value < 0.4f))
+            if (!shouldFetchExplosives && (availableItems.Count == 0 || Random.value < 0.4f))
             {
                 assignment =
-                    new Drone.BringCrateAssignment(dropOffPoints[Random.Range(0, dropOffPoints.Count)].position);
+                    new Drone.BringCrateAssignment(dropOffPoints[Random.Range(0, dropOffPoints.Count - 1)].position);
             }
             else
             {
-                List<Holdable> available = availableItems.ToList();
-                assignment = new Drone.RetrieveCrateAssignment(available[Random.Range(0, available.Count)]);
+                assignment = new Drone.RetrieveCrateAssignment(availableItems[Random.Range(0, availableItems.Count - 1)]);
             }
 
             drone.GiveAssignment(assignment);
@@ -103,7 +102,7 @@ namespace AI
             if (spawnPoints.Count == 0)
                 return Vector3.zero;
 
-            return spawnPoints[Random.Range(0, spawnPoints.Capacity)].position;
+            return spawnPoints[Random.Range(0, spawnPoints.Count - 1)].position;
         }
     }
 }

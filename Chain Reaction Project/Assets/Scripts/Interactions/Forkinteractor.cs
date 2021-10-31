@@ -70,6 +70,11 @@ public class Forkinteractor : MonoBehaviour
                     Collider closestCrate = _PickableNearFork.First();
                     foreach (Collider crate in _PickableNearFork)
                     {
+                        // Give priority to explosives
+                        if (closestCrate.GetComponent<Holdables.Holdable>().Type == Holdables.HoldableType.Explosive &&
+                            crate.GetComponent<Holdables.Holdable>().Type == Holdables.HoldableType.Crate)
+                            continue;
+
                         if (Vector3.Distance(closestCrate.transform.position, this.transform.position) >
                             Vector3.Distance(crate.transform.position, this.transform.position))
                         {

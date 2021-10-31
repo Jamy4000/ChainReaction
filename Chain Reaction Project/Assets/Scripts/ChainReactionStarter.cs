@@ -20,8 +20,8 @@ namespace ChainReaction
         private void Awake()
         {
             explosionForce = GetComponent<ExplosionForce>();
-            StaticActionProvider.recalculateChainReaction += RecalculateChain;
-            StaticActionProvider.triggerExplosion += Explode;
+            StaticActionProvider.RecalculateChainReaction += RecalculateChain;
+            StaticActionProvider.TriggerExplosion += Explode;
 
 
             RecalculateChain();
@@ -29,8 +29,8 @@ namespace ChainReaction
 
         private void OnDestroy()
         {
-            StaticActionProvider.recalculateChainReaction -= RecalculateChain;
-            StaticActionProvider.triggerExplosion -= Explode;
+            StaticActionProvider.RecalculateChainReaction -= RecalculateChain;
+            StaticActionProvider.TriggerExplosion -= Explode;
         }
 
         [ContextMenu("Explode")]

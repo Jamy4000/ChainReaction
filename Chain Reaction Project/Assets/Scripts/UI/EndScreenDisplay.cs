@@ -11,14 +11,14 @@ public class EndScreenDisplay : MonoBehaviour
 
     private void Awake()
     {
-        StaticActionProvider.triggerExplosion += ShowEndScreen;
-        StaticActionProvider.destructionForce += UpdateCounter;
+        StaticActionProvider.TriggerExplosion += ShowEndScreen;
+        StaticActionProvider.DestructionForce += UpdateCounter;
     }
 
     private void OnDestroy()
     {
-        StaticActionProvider.triggerExplosion -= ShowEndScreen;
-        StaticActionProvider.destructionForce -= UpdateCounter;
+        StaticActionProvider.TriggerExplosion -= ShowEndScreen;
+        StaticActionProvider.DestructionForce -= UpdateCounter;
     }
 
     void ShowEndScreen()

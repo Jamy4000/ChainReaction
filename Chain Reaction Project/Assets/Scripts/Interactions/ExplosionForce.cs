@@ -44,7 +44,7 @@ namespace ChainReaction
                 }
             }
 
-            StaticActionProvider.destructionForce?.Invoke(totalForce);
+            StaticActionProvider.DestructionForce?.Invoke(totalForce);
 
             GameObject vfx = Instantiate(explosionVFXPrefab, transform.position + explosionOffset, Quaternion.identity, transform.parent);
             vfx.transform.localScale = Vector3.one * explosionRadius;
