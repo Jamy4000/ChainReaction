@@ -3985,10 +3985,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: LevelComplete
       objectReference: {fileID: 0}
-    - target: {fileID: 1278955632390755079, guid: 6e6792c9bafbc5f438c5938282698332, type: 3}
-      propertyPath: _fetchExplosivesProbability
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7602084526280882323, guid: 6e6792c9bafbc5f438c5938282698332, type: 3}
       propertyPath: m_LocalPosition.z
       value: -16.11

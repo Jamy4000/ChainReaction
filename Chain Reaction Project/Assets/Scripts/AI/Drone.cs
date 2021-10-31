@@ -69,6 +69,7 @@ namespace AI
 
         private void StopMoving()
         {
+            Debug.Log("Stop moving");
             this.enabled = false;
         }
 
