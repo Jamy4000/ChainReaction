@@ -1,9 +1,14 @@
 fileFormatVersion: 2
-guid: 07bba065fe785f94e848bcdfd15528fc
+guid: 5ea07a08da4af7041b6ee38aed8e5d50
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
   externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: roof_gate
+    second: {fileID: 2100000, guid: 1f41354a9380d504ba135b8f86fbf172, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -90,7 +95,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 100
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0

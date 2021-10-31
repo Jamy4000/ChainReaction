@@ -34,11 +34,16 @@ namespace AI
         [SerializeField, Range(0, 100)]
         private float spawnCooldownTime = 3f;
 
+        [SerializeField, Range(0.0f, 1.0f)]
+        private float _fetchExplosivesProbability = 0.2f;
+
         private float timeSinceLevelStart;
 
-        private IEnumerable<Holdable> AvailableHoldables =>
-            HoldableCollector.collection.Where(holdable => holdable.IsPutDown);
-        
+        private IEnumerable<Holdable> AvailableCrates =>
+            HoldableCollector.collection.Where(holdable => holdable.IsPutDown && holdable.Type == HoldableType.Crate);
+        private IEnumerable<Holdable> AvailableExplosives =>
+            HoldableCollector.collection.Where(holdable => holdable.IsPutDown && holdable.Type == HoldableType.Explosive);
+
         private void Start() => StartCoroutine(SpawnRoutine());
 
         private void Update() => timeSinceLevelStart += Time.deltaTime;
@@ -75,13 +80,18 @@ namespace AI
             drone.transform.position = GetRandomSpawnPoint();
 
             Drone.Assignment assignment;
+            bool shouldFetchExplosives = Random.value > _fetchExplosivesProbability;
+            IEnumerable<Holdable> availableItems = shouldFetchExplosives ?
+                AvailableExplosives : AvailableCrates;
 
-            if (AvailableHoldables.Count() == 0 || Random.value < .5)
+            if (!shouldFetchExplosives && (availableItems.Count() == 0 || Random.value < 0.4f))
+            {
                 assignment =
                     new Drone.BringCrateAssignment(dropOffPoints[Random.Range(0, dropOffPoints.Count)].position);
+            }
             else
             {
-                List<Holdable> available = AvailableHoldables.ToList();
+                List<Holdable> available = availableItems.ToList();
                 assignment = new Drone.RetrieveCrateAssignment(available[Random.Range(0, available.Count)]);
             }
 

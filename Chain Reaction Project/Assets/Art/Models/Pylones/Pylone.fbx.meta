@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 07bba065fe785f94e848bcdfd15528fc
+guid: e06a90b5fb4ca084fa6c61884b1b1153
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
@@ -7,8 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: walls
-    second: {fileID: 2100000, guid: f2bade2790f9c6a4bb4788133ec2cb27, type: 2}
+      name: lambert1
+    second: {fileID: 2100000, guid: b1acdcb880071a145b74130c1019cf0d, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -39,7 +39,7 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 100
+    globalScale: 0.254
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -90,7 +90,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 100
+    globalScale: 0.00254
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
