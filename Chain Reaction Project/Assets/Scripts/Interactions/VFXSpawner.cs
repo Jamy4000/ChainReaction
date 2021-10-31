@@ -18,7 +18,7 @@ namespace ChainReaction
         {
             yield return new WaitForSeconds(delay);
 
-            GameObject vfx = Instantiate(smokeVFXPrefab, transform.position, Quaternion.identity, transform.parent);
+            Instantiate(smokeVFXPrefab, transform.position, Quaternion.identity);
         }
     }
 }

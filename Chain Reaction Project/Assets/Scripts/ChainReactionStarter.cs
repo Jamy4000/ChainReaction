@@ -2,16 +2,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System.Collections;
+using System;
 
 namespace ChainReaction
 {
     [RequireComponent(typeof(ExplosionForce))]
     public class ChainReactionStarter : MonoBehaviour
     {
-        ExplosionForce explosionForce;
+        ExplosionForce _explosionForce;
 
-        //public List<ExplosionForce> allExplosives = new List<ExplosionForce>();
-        public List<ExplosionForce> chainedExplosives = new List<ExplosionForce>();
+        private List<ExplosionForce> _chainedExplosives = new List<ExplosionForce>();
+        private List<ExplosionForce> _outOfRangeExplosives = new List<ExplosionForce>();
 
         [SerializeField, ColorUsageAttribute(true, true)] private Color chainedColor;
         [SerializeField, ColorUsageAttribute(true, true)] private Color chainedWarningColor;
@@ -20,79 +21,111 @@ namespace ChainReaction
 
         private void Awake()
         {
-            explosionForce = GetComponent<ExplosionForce>();
-            StaticActionProvider.RecalculateChainReaction += RecalculateChain;
+            _explosionForce = GetComponent<ExplosionForce>();
             StaticActionProvider.TriggerExplosion += Explode;
+            SignalBus.GameOver.Listen(StopUpdating);
+        }
 
+        private void Start()
+        {
+            RecalculateChain();
+        }
 
+        private void Update()
+        {
             RecalculateChain();
         }
 
         private void OnDestroy()
         {
-            StaticActionProvider.RecalculateChainReaction -= RecalculateChain;
             StaticActionProvider.TriggerExplosion -= Explode;
+            SignalBus.GameOver.StopListening(StopUpdating);
         }
 
-        IEnumerator ExecuteAfterTime(float time,ExplosionForce item, List<ExplosionForce> newOrigins)
+        private void StopUpdating()
         {
-            yield return new WaitForSeconds(time);
-            foreach (var newCandidate in newOrigins)
-            {
-                myExplode(newCandidate);
-            }
-            item.Explode();
-            // Code to execute after the delay
+            this.enabled = false;
         }
+
         [ContextMenu("Explode")]
         private void Explode()
         {
-            chainedExplosives.Clear();
-            //RecalculateChain();
-            myExplode(explosionForce);
-            //foreach (var item in chainedExplosives)
-              //  item.Explode();
+            _chainedExplosives.Clear();
+            ExploseThisBomb(_explosionForce);
         }
         
-        private void myExplode(ExplosionForce candidate)
+        private void ExploseThisBomb(ExplosionForce candidate)
         {
-            
             List<ExplosionForce> newOrigins = CalculateNewCandidates(candidate, ExplosivesCollector.collection);// allExplosives);
+
+            foreach (ExplosionForce item in newOrigins)
+            {
+                ExplosivesCollector.collection.Remove(item);
+            }
+
             StartCoroutine(ExecuteAfterTime(0.5f, candidate, newOrigins));
             
             List<ExplosionForce> CalculateNewCandidates(ExplosionForce origin, List<ExplosionForce> candidates)
             {
                 List<ExplosionForce> candidatesWithinRange = new List<ExplosionForce>();
 
-                foreach (var explosive in candidates) { 
-                    if (!chainedExplosives.Contains(explosive))
+                foreach (var explosive in candidates) 
+                { 
+                    if (!_chainedExplosives.Contains(explosive))
                     {
-                        if ((explosive.transform.position - origin.transform.position).magnitude < origin.explosionRadius)
+                        Vector3 explosiveToOrigin = explosive.transform.position - origin.transform.position;
+                        float sqrDistance = Vector3.SqrMagnitude(explosiveToOrigin);
+
+                        if (sqrDistance <= origin.ExplosionRadiusSqr) 
                         {
                             candidatesWithinRange.Add(explosive);
                         }
                     }
                 }
+
                 return candidatesWithinRange;
             }
         }
-        private void CalculateChain(ExplosionForce candidate)
+
+        IEnumerator ExecuteAfterTime(float time, ExplosionForce item, List<ExplosionForce> newOrigins)
         {
-            chainedExplosives.Add(candidate);
-
-            List<ExplosionForce> newOrigins = CalculateNewCandidates(candidate, ExplosivesCollector.collection);// allExplosives);
-
+            yield return new WaitForSeconds(time);
             foreach (var newCandidate in newOrigins)
-                CalculateChain(newCandidate);
+            {
+                ExploseThisBomb(newCandidate);
+            }
+            item.Explode();
+            // Code to execute after the delay
+        }
 
-            List<ExplosionForce> CalculateNewCandidates(ExplosionForce origin, List<ExplosionForce> candidates)
+        private void CalculateChain(ExplosionForce origin, List<ExplosionForce> explosivesWithinRange, List<ExplosionForce> outOfRangeExplosives)
+        {
+            explosivesWithinRange.Add(origin);
+            outOfRangeExplosives.Remove(origin);
+
+            List<ExplosionForce> chainedExplosives = CalculateChainedExplosives(origin, outOfRangeExplosives);// allExplosives);
+
+            foreach (ExplosionForce explosive in chainedExplosives)
+                CalculateChain(explosive, explosivesWithinRange, outOfRangeExplosives);
+
+
+            List<ExplosionForce> CalculateChainedExplosives(ExplosionForce origin, List<ExplosionForce> candidates)
             {
                 List<ExplosionForce> candidatesWithinRange = new List<ExplosionForce>();
 
-                foreach (var explosive in candidates)
-                    if (!chainedExplosives.Contains(explosive))
-                        if ((explosive.transform.position - origin.transform.position).magnitude < origin.explosionRadius)
-                            candidatesWithinRange.Add(explosive);
+                foreach (ExplosionForce explosive in candidates)
+                {
+                    if (explosivesWithinRange.Contains(explosive))
+                        continue;
+
+                    Vector3 explosiveToOrigin = explosive.transform.position - origin.transform.position;
+                    float sqrDistance = Vector3.SqrMagnitude(explosiveToOrigin);
+
+                    if (sqrDistance <= origin.ExplosionRadiusSqr)
+                    {
+                        candidatesWithinRange.Add(explosive);
+                    }
+                }
 
                 return candidatesWithinRange;
             }
@@ -101,20 +134,20 @@ namespace ChainReaction
         [ContextMenu("Recalculate")]
         public void RecalculateChain()
         {
-            chainedExplosives.Clear();
-            CalculateChain(explosionForce);
+            _chainedExplosives.Clear();
+            _outOfRangeExplosives.Clear();
+            _outOfRangeExplosives.AddRange(ExplosivesCollector.collection);
 
-            foreach (var item in chainedExplosives)
+            CalculateChain(_explosionForce, _chainedExplosives, _outOfRangeExplosives);
+
+            foreach (ExplosionForce item in _chainedExplosives)
             {
-                item.explosionRangeShader.GetComponent<MeshRenderer>().material.SetColor("Color_", chainedColor);
-                item.explosionRangeShader.GetComponent<MeshRenderer>().material.SetColor("WarningSignsColor_", chainedWarningColor);
-
+                item.SetChainedColor(chainedColor, chainedWarningColor);
             }
 
-            foreach (var item in ExplosivesCollector.collection.Where(x => !chainedExplosives.Contains(x)))
+            foreach (ExplosionForce item in _outOfRangeExplosives)
             {
-                item.explosionRangeShader.GetComponent<MeshRenderer>().material.SetColor("Color_", unchainedColor);
-                item.explosionRangeShader.GetComponent<MeshRenderer>().material.SetColor("WarningSignsColor_", unchainedWarningColor);
+                item.SetOutOfRangeColor(unchainedColor, unchainedWarningColor);
             }
         }
     }

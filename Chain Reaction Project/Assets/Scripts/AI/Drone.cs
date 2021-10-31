@@ -33,6 +33,7 @@ namespace AI
 
         private void Start()
         {
+            SignalBus.GameOver.Listen(StopMoving);
             moveSource.Play();
             sfxSource.PlayOneShot(spawnSound);
             if (assignment is RetrieveCrateAssignment retrieveCrateAssignment)
@@ -59,8 +60,14 @@ namespace AI
 
         private void OnDestroy()
         {
+            SignalBus.GameOver.StopListening(StopMoving);
             if (assignment is RetrieveCrateAssignment retrieveCrateAssignment && retrieveCrateAssignment.Holdable != null)
                 retrieveCrateAssignment.Holdable.Held -= CancelAssignment;
+        }
+
+        private void StopMoving()
+        {
+            this.enabled = false;
         }
 
         public void RefreshInitialState()

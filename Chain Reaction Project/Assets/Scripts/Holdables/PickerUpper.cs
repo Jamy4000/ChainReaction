@@ -22,8 +22,6 @@ namespace Holdables
 
             holdable.HoldObject();
             CurrentHoldable = holdable;
-            
-            StaticActionProvider.RecalculateChainReaction?.Invoke();
         }
 
         internal void PutHoldableDown()
@@ -37,9 +35,6 @@ namespace Holdables
             trans.position = PutDownPosition;
 
             CurrentHoldable.DropObject();
-
-            if (CurrentHoldable.Type == HoldableType.Explosive)
-                StaticActionProvider.RecalculateChainReaction?.Invoke();
 
             CurrentHoldable = null;
         }

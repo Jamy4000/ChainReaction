@@ -14,8 +14,6 @@ namespace ChainReaction
 
         public static Action TriggerExplosion;
 
-        public static Action RecalculateChainReaction;
-
         public static Action UpdateForceText;
     }
 }

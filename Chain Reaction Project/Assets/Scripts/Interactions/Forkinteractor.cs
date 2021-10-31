@@ -10,8 +10,8 @@ public class Forkinteractor : MonoBehaviour
     [SerializeField]
     private AudioSource _itemDropSound;
 
-    private HashSet<Collider> _PickableNearFork = new HashSet<Collider>();
-    private Collider _helditem = null;
+    private HashSet<Holdables.Holdable> _PickableNearFork = new HashSet<Holdables.Holdable>();
+    private Holdables.Holdable _helditem = null;
 
     [SerializeField]
     private Transform _ItemPositionOffset;
@@ -25,8 +25,10 @@ public class Forkinteractor : MonoBehaviour
     {
         if (other.CompareTag(TagsHolder.BOMB_TAG) || other.CompareTag(TagsHolder.CRATE_TAG))
         {
-            if (other.GetComponent<Holdables.Holdable>()) { 
-                _PickableNearFork.Add(other);
+            Holdables.Holdable holdable = other.GetComponent<Holdables.Holdable>();
+            if (holdable) 
+            { 
+                _PickableNearFork.Add(holdable);
             }
         }
 
@@ -40,9 +42,10 @@ public class Forkinteractor : MonoBehaviour
     {
         if (other.CompareTag(TagsHolder.BOMB_TAG) || other.CompareTag(TagsHolder.CRATE_TAG))
         {
-            if (other.GetComponent<Holdables.Holdable>())
+            Holdables.Holdable holdable = other.GetComponent<Holdables.Holdable>();
+            if (holdable && _PickableNearFork.Contains(holdable))
             {
-                _PickableNearFork.Remove(other);
+                _PickableNearFork.Remove(holdable);
             }
         }
     }
@@ -67,25 +70,31 @@ public class Forkinteractor : MonoBehaviour
                 // Picking up crate
                 if (_PickableNearFork.Count > 0)
                 {
-                    Collider closestCrate = _PickableNearFork.First();
-                    foreach (Collider crate in _PickableNearFork)
+                    Holdables.Holdable closestCrate = _PickableNearFork.First();
+                    Vector3 crateToPlayer = closestCrate.transform.position - transform.position;
+                    float bestHorizontalSqDist = crateToPlayer.x * crateToPlayer.x + crateToPlayer.z * crateToPlayer.z;
+
+                    foreach (Holdables.Holdable crate in _PickableNearFork)
                     {
                         // Give priority to explosives
-                        if (closestCrate.GetComponent<Holdables.Holdable>().Type == Holdables.HoldableType.Explosive &&
-                            crate.GetComponent<Holdables.Holdable>().Type == Holdables.HoldableType.Crate)
+                        if (closestCrate.Type == Holdables.HoldableType.Explosive &&
+                            crate.Type == Holdables.HoldableType.Crate)
                             continue;
 
-                        if (Vector3.Distance(closestCrate.transform.position, this.transform.position) >
-                            Vector3.Distance(crate.transform.position, this.transform.position))
+                        crateToPlayer = crate.transform.position - transform.position;
+                        float horizontalSqDist = crateToPlayer.x * crateToPlayer.x + crateToPlayer.z * crateToPlayer.z;
+                        if (horizontalSqDist < bestHorizontalSqDist)
                         {
                             closestCrate = crate;
+                            bestHorizontalSqDist = horizontalSqDist;
                         }
                     };
+
                     closestCrate.transform.SetParent(this.transform);
                     closestCrate.transform.localPosition = _ItemPositionOffset.localPosition;
                     closestCrate.transform.localRotation = Quaternion.identity;
                     _helditem = closestCrate;
-                    _helditem.GetComponent<Holdables.Holdable>().HoldObject();
+                    _helditem.HoldObject();
 
                     _itemPickupSound.Play();
                 }

@@ -39,18 +39,35 @@ namespace AI
 
         private float timeSinceLevelStart;
 
+        private Coroutine _spawnCoroutine;
+
         private IEnumerable<Holdable> AvailableCrates =>
             HoldableCollector.collection.Where(holdable => holdable.IsPutDown && holdable.Type == HoldableType.Crate);
         private IEnumerable<Holdable> AvailableExplosives =>
             HoldableCollector.collection.Where(holdable => holdable.IsPutDown && holdable.Type == HoldableType.Explosive);
 
-        private void Start() => StartCoroutine(SpawnRoutine());
+        private void Start()
+        {
+            _spawnCoroutine = StartCoroutine(SpawnRoutine());
+            SignalBus.GameOver.Listen(StopSpawning);
+        }
 
         private void Update() => timeSinceLevelStart += Time.deltaTime;
 
+        private void OnDestroy()
+        {
+            StopCoroutine(_spawnCoroutine);
+            SignalBus.GameOver.StopListening(StopSpawning);
+        }
+
+        private void StopSpawning()
+        {
+            StopCoroutine(_spawnCoroutine);
+        }
+
         private IEnumerator SpawnRoutine()
         {
-            while (Application.isPlaying)
+            while (true)
             {
                 if (NeedMoreDrones())
                     SpawnDrone();
